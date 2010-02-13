@@ -1,4 +1,4 @@
-![](http://www.ubuntu-pics.de/bild/42423/screenshot_001_Sn15dk.png)
+![](http://img7.imageshack.us/img7/5646/phpmtrmkgam.jpg)
 
 License
 -------
