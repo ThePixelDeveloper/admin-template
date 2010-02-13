@@ -1,0 +1,1869 @@
+/*	
+	Copyright 2009 British Broadcasting Corporation
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+*/
+.glow170-cssTest {
+  background: url(images/darkpanel/ctr.png);
+  z-index: 1234;
+}
+
+/* preloader */
+  .glow170-panel-preload {
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	top: -10px;
+	width: 1px;
+	left: -5px;
+  }
+  .glow170-panel-preload .panel-close {
+	display: none;
+	visibility: hidden;
+  }
+  .glow170-panel-preload .infoPanel-pointerT,
+  .glow170-panel-preload .infoPanel-pointerR,
+  .glow170-panel-preload .infoPanel-pointerB,
+  .glow170-panel-preload .infoPanel-pointerL {
+	display: block;
+  }
+/*end */
+.glow170-overlay {
+	visibility: hidden;
+	display: none;
+	overflow: hidden;
+	position: absolute;
+}
+
+/* stop the dotted line around the overlay focal point when it has focus */
+.glow170-overlay .overlay-focalPoint:focus {
+  outline: none;
+}
+.glow170-overlay .overlay-focalPoint {
+  overflow: hidden;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+/*hide stuff offscreen*/
+.glow170-overlay .panelAccess {
+  position: absolute;
+  overflow: hidden;
+  height: 0;
+  width: 0;
+  top: -5000px;
+  left: -5000px;
+}
+/*PANEL*/
+  .glow170-panel .c {
+	  background: #57585A url(images/darkpanel/bg.gif) repeat-x bottom;
+	  color: #fff;
+	  margin: 0 10px;
+  }
+  .glow170-panel .tr, .glow170-panel .tl, .glow170-panel .br, .glow170-panel .bl {
+	  height: 14px;
+	  overflow: hidden;
+  }
+  .glow170-panel .tr, .glow170-panel .br {
+	  float: right;
+	  width: 14px;
+  }
+  /* we couldn't sprite these because of IE being a pain */
+  .glow170-panel .tr { background: url(images/darkpanel/ctr.png); }
+  .glow170-panel .tl { background: url(images/darkpanel/ctl.png); }
+  .glow170-panel .bl { background: url(images/darkpanel/cbl.png); }
+  .glow170-panel .br { background: url(images/darkpanel/cbr.png); }
+
+  .glow170-panel .tl, .glow170-panel .bl {
+	  width: 14px;
+	  float: left;
+  }
+  .glow170-panel .tb, .glow170-panel .bb {
+	  border: 4px solid #57585A;
+	  border-width: 0 0 4px 0;
+	  overflow: hidden;
+	  font-size: 0;
+  }
+  .glow170-panel .tb div, .glow170-panel .bb div {
+	  height: 10px;
+	  background: #fff;
+	  opacity: 0.5;
+	  font-size: 0;
+  }
+  .glow170-panel .bb {
+	  border-width: 4px 0 0 0;
+	  border-color: #424243;
+  }
+  .glow170-panel .tc {
+	  overflow: hidden;
+	  position: relative;
+	  zoom: 1;
+  }
+  .glow170-panel .bars {
+	  position: absolute;
+	  width: 100%;
+	  padding-left: 10px;
+	  height: 100%;
+	  background: #fff;
+	  opacity: 0.5;
+	  margin-left: -10px;
+	  /* the following rule hits IE6 only */
+	  _height: 2000px;
+	  /* the following rule hits IE6 & IE7 */
+	  *padding-left: 0;
+  }
+  /*
+	annoying firefox bug - it sometimes doesn't obey the overflow by one px if
+	the opacity isn't 1. Firefox users get an extra http request. Oh well. -J
+  */
+  html .glow170-gecko .glow170-panel .bars {
+	background: url(images/darkpanel/transbg.png);
+	opacity: 1;
+  }
+  .glow170-panel .c {
+	  position: relative;
+	  min-height: 50px;
+	  overflow: hidden;
+  }
+
+  .glow170-panel .panel-hd {
+	  border-bottom: 1px solid #B0B0B0;
+	  padding: 5px 10px 10px;
+	  font-weight: bold;
+  }
+  .glow170-panel .panel-hd * {
+	  margin: 0; padding: 0;
+  }
+
+  .glow170-panel .panel-bd, .glow170-panel .panel-ft {
+	  margin: 0 10px;
+  }
+
+  .glow170-panel .panel-close {
+	  background: url(images/darkpanel/close.png);
+	  height: 20px;
+	  width: 20px;
+	  float: right;
+	  position: relative;
+	  margin: 5px 10px 0 0;
+	  text-indent: -5000px;
+  }
+
+  /*without header*/
+	.glow170-overlay .panel-noHeader .panel-hd {
+	  display: none;
+	}
+  /*end*/
+
+
+  /*without images*/
+	.glow170-basic .glow170-panel .panel-close {
+		text-indent: 0;
+		color: #fff;
+		border: 1px solid #fff;
+		text-align: center;
+	}
+	.glow170-basic .glow170-panel .tb,
+	.glow170-basic .glow170-panel .bb,
+	.glow170-basic .glow170-panel .bars {
+		visibility: hidden;
+	}
+  /*end*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ This block of CSS rules for IE only has been moved to panel.js to be output directly to
+ the page. It is there so that the path to the PNGs can be deduced from the location of
+ the widgets css file.
+ It is acceptable because this design will not be altered before version 2 of glow, and
+ at that point it will be modified to avoid the use of PNGs.
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+  .glow170-ie .glow170-panel .tr {
+	background:none;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/darkpanel/ctr.png', sizingMethod='crop');
+  }
+  .glow170-ie .glow170-panel .tl {
+	background:none;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/darkpanel/ctl.png', sizingMethod='crop');
+  }
+  .glow170-ie .glow170-panel .bl {
+	background:none;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/darkpanel/cbl.png', sizingMethod='crop');
+  }
+  .glow170-ie .glow170-panel .br {
+	background:none;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/darkpanel/cbr.png', sizingMethod='crop');
+  }
+  .glow170-ie .glow170-panel .infoPanel-pointerT {
+	background:none;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/darkpanel/at.png', sizingMethod='crop');
+  }
+  .glow170-ie .glow170-panel .infoPanel-pointerR {
+	background:none;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/darkpanel/ar.png', sizingMethod='crop');
+  }
+  .glow170-ie .glow170-panel .infoPanel-pointerB {
+	background:none;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/darkpanel/ab.png', sizingMethod='crop');
+  }
+  .glow170-ie .glow170-panel .infoPanel-pointerL {
+	background:none;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/darkpanel/al.png', sizingMethod='crop');
+  }
+
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+  .glow170-ie .glow170-panel .bars,
+  .glow170-ie .glow170-panel .tb div,
+  .glow170-ie .glow170-panel .bb div {
+	  opacity: 1;
+	  filter: alpha(opacity=50);	  
+  }
+  
+  .glow170-ie .glow170-panel .tb,
+  .glow170-ie .glow170-panel .bb {
+	  zoom: 1;
+	  z-index: -1;
+	  position: relative;
+  }
+
+  /*
+	this solves a weird IE bug where the content vanishes if the panel is given an
+	opacity value
+  */
+  .glow170-ie .glow170-panel .c {
+	filter: alpha(opacity=100);
+  }
+
+  .glow170-ielt7 .glow170-panel .tr,
+  .glow170-ielt7 .glow170-panel .br {
+	  margin-left: -3px;
+  }
+  .glow170-ielt7 .glow170-panel .tl,
+  .glow170-ielt7 .glow170-panel .bl {
+	  margin-right: -3px;
+  }
+  .glow170-ielt7 .glow170-panel .c {
+	  height: 50px;
+	  overflow: visible;
+  }
+  .glow170-ielt7 .glow170-panel .panel-bd {
+	  overflow: hidden;
+  }
+  /*DARK THEME*/
+	/*Dark is the default*/
+  /*LIGHT THEME*/
+	.glow170-overlay .panel-light .c {
+	  background: #fff url(images/lightpanel/bg.gif) repeat-x bottom;
+	  color: #000;
+	}
+	.glow170-overlay .panel-light .tb {
+	  border-color: #fff;
+	}
+	.glow170-overlay .panel-light .bb {
+	  border-color: #E7E8E9;
+	}
+	.glow170-overlay .panel-light .bars,
+	.glow170-overlay .panel-light .tb div,
+	.glow170-overlay .panel-light .bb div {
+	  background: #000;
+	  opacity: 0.26;
+	}
+	.glow170-overlay .panel-light .tr { background: url(images/lightpanel/ctr.png); }
+	.glow170-overlay .panel-light .tl { background: url(images/lightpanel/ctl.png); }
+	.glow170-overlay .panel-light .bl { background: url(images/lightpanel/cbl.png); }
+	.glow170-overlay .panel-light .br { background: url(images/lightpanel/cbr.png); }
+	html .glow170-overlay .panel-light .infoPanel-pointerT { background: url(images/lightpanel/at.png); }
+	html .glow170-overlay .panel-light .infoPanel-pointerR { background: url(images/lightpanel/ar.png); }
+	html .glow170-overlay .panel-light .infoPanel-pointerB { background: url(images/lightpanel/ab.png); }
+	html .glow170-overlay .panel-light .infoPanel-pointerL { background: url(images/lightpanel/al.png); }
+
+	.glow170-overlay .panel-light .panel-close {
+	  background: url(images/lightpanel/close.png);
+	}
+	.glow170-gecko .glow170-overlay .panel-light .bars {
+	  background: url(images/lightpanel/transbg.png);
+	}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ This block of CSS rules for IE only has been moved to panel.js to be output directly to
+ the page. It is there so that the path to the PNGs can be deduced from the location of
+ the widgets css file.
+ It is acceptable because this design will not be altered before version 2 of glow, and
+ at that point it will be modified to avoid the use of PNGs.
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	.glow170-ie .glow170-overlay .panel-light .tr {
+	  background:none;
+	  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/lightpanel/ctr.png', sizingMethod='crop');
+	}
+	.glow170-ie .glow170-overlay .panel-light .tl {
+	  background:none;
+	  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/lightpanel/ctl.png', sizingMethod='crop');
+	}
+	.glow170-ie .glow170-overlay .panel-light .bl {
+	  background:none;
+	  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/lightpanel/cbl.png', sizingMethod='crop');
+	}
+	.glow170-ie .glow170-overlay .panel-light .br {
+	  background:none;
+	  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/lightpanel/cbr.png', sizingMethod='crop');
+	}
+	.glow170-ie .glow170-overlay .panel-light .infoPanel-pointerT {
+	  background:none;
+	  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/lightpanel/at.png', sizingMethod='crop');
+	}
+	.glow170-ie .glow170-overlay .panel-light .infoPanel-pointerR {
+	  background:none;
+	  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/lightpanel/ar.png', sizingMethod='crop');
+	}
+	.glow170-ie .glow170-overlay .panel-light .infoPanel-pointerB {
+	  background:none;
+	  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/lightpanel/ab.png', sizingMethod='crop');
+	}
+	.glow170-ie .glow170-overlay .panel-light .infoPanel-pointerL {
+	  background:none;
+	  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='//www.bbc.co.uk/glow/1.1.0/widgets/images/lightpanel/al.png', sizingMethod='crop');
+	}
+
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	.glow170-ie .glow170-overlay .panel-light .bars,
+	.glow170-ie .glow170-overlay .panel-light .tb div,
+	.glow170-ie .glow170-overlay .panel-light .bb div {
+		opacity: 1;
+		filter: alpha(opacity=26);
+	}
+/*END*/
+/* info panel */
+  .glow170-infoPanel .c {
+	min-height: 125px
+  }
+
+  .glow170-panel .infoPanel-pointerT,
+  .glow170-panel .infoPanel-pointerB,
+  .glow170-panel .infoPanel-pointerL,
+  .glow170-panel .infoPanel-pointerR {
+	display: none;
+  }
+  .glow170-infoPanel-pointT .defaultSkin .infoPanel-pointerT,
+  .glow170-infoPanel-pointL .defaultSkin .infoPanel-pointerL,
+  .glow170-infoPanel-pointR .defaultSkin .infoPanel-pointerR,
+  .glow170-infoPanel-pointB .defaultSkin .infoPanel-pointerB {
+	width: 48px;
+	height: 34px;
+	overflow: hidden;
+	position: relative;
+	display: block;
+  }
+  .glow170-infoPanel-pointL .defaultSkin .infoPanel-pointerL,
+  .glow170-infoPanel-pointR .defaultSkin .infoPanel-pointerR {
+	width: 34px;
+	height: 47px;
+	left: 0;
+	z-index: 1;
+  }
+  .glow170-infoPanel-pointL .defaultSkin .infoPanel-pointerL {
+	position: absolute;
+  }
+  .glow170-panel .infoPanel-pointerT {
+	margin: 0 0 -10px 45px;
+	z-index: 1000;
+	background: url(images/darkpanel/at.png);
+  }
+  .glow170-panel .infoPanel-pointerB {
+	margin: -10px 0 0 45px;
+	background: url(images/darkpanel/ab.png);
+  }
+  .glow170-panel .infoPanel-pointerL {
+	margin: 54px 0 0 0;
+	background: url(images/darkpanel/al.png);
+  }
+  .glow170-infoPanel-pointL .defaultSkin .pc {
+	margin-left: 24px;
+  }
+  .glow170-panel .infoPanel-pointerR {
+	float: right;
+	position: relative;
+	margin: 54px 0 0 -34px;
+	background: url(images/darkpanel/ar.png);
+  }
+  .glow170-infoPanel-pointR .defaultSkin .pc {
+	margin-right: 24px;
+  }
+  .glow170-ielt7 .glow170-infoPanel .c {
+	  height: 125px;
+  }
+  /*without header*/
+	.glow170-panel-noHeader .defaultSkin .infoPanel-pointerL,
+	.glow170-panel-noHeader .defaultSkin .infoPanel-pointerR {
+	  margin-top: 33px;
+	}
+  /*end*/
+/* AutoSuggest */
+.glow170-autoSuggest ul { /*TODO: handle embedded ul */
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	color: #000;
+	background-color: #FFF;
+	border: 1px solid #333;
+}
+
+.glow170-autoSuggest .autosuggest-dark {
+	background-color: #000;
+	color: #fff;
+}
+
+.glow170-autoSuggest li { /*TODO: handle embedded ul */
+	padding: 1px 9px;
+	margin: 0;
+	zoom: 1;
+	cursor: pointer;
+}
+
+.glow170-autoSuggest li.odd {
+	background-color: #D3D3D3;
+}
+
+.glow170-autoSuggest li.even {
+	background-color: #FFF;
+}
+
+.glow170-autoSuggest li.active {
+	background-color: #A9A9A9;
+}
+
+.glow170-autoSuggest .autosuggest-dark li.odd {
+	background-color: #333;
+}
+
+.glow170-autoSuggest .autosuggest-dark li.even {
+	background-color: #000;
+}
+
+.glow170-autoSuggest .autosuggest-dark li.active {
+	background-color: #999;
+}
+
+/* Carousel */
+
+.glow170-carousel, .glow170-vCarousel {
+	position:relative;
+	overflow:hidden;
+	zoom:1;
+}
+
+.glow170-carousel .carousel-window, .glow170-vCarousel .carousel-window {
+	position:relative;
+	overflow:hidden;
+}
+
+.glow170-carousel .carousel-content, .glow170-vCarousel .carousel-content {
+	position:relative;
+	list-style-type:none;
+	padding-left:0;
+	margin:0;
+	top:0;
+	left:0;
+	overflow: hidden !important;
+	/* If the inner element is floated it creates positioning issues in IE */
+	float: none !important;
+}
+
+.glow170-carousel .carousel-item, .glow170-vCarousel .carousel-item {
+	float:left;
+	/*_overflow:hidden;*/
+	display: inline;
+}
+
+.glow170-carousel .carousel-nav, .glow170-vCarousel .carousel-nav {
+	position:relative;
+	display:block;
+	width:30px;
+	height:100%;
+	cursor:pointer;
+	z-index:1;
+}
+
+.glow170-carousel .carousel-nav span, .glow170-vCarousel .carousel-nav span {
+	position:absolute;
+	top:0;
+	left:0;
+	display:block;
+	width:100%;
+	height:100%;
+}
+
+/* Light Theme */
+.glow170-carousel .carousel-light .carousel-window {
+	background:#f0f0f0;
+}
+
+.glow170-carousel .carousel-light .carousel-nav span {
+	background-image:url(images/carousel/lighth.png);
+}
+
+.glow170-carousel .carousel-light .carousel-nav {
+	background:#f0f0f0;
+	color:#000;
+}
+
+/* Dark Theme */
+
+.glow170-carousel .carousel-dark .carousel-window {
+	background:#282828;
+}
+
+.glow170-carousel .carousel-dark .carousel-nav {
+	background:#282828;
+	color:#fff;
+}
+
+.glow170-carousel .carousel-dark .carousel-nav span {
+	background-image:url(images/carousel/darkh.png);
+}
+
+.glow170-carousel .carousel-window {
+	float:left;
+}
+
+.glow170-carousel .carousel-nav {
+	float:left;
+	overflow:hidden;
+}
+
+.glow170-carousel .carousel-nav span,
+.glow170-vCarousel .carousel-nav span {
+	background-repeat:no-repeat;
+	text-indent: -5000px; /* move text away when images are enabled */
+}
+
+.glow170-basic .glow170-carousel .carousel-nav span,
+.glow170-basic .glow170-vCarousel .carousel-nav span {
+	text-indent: 0px; /* move text back when images are not enabled */
+}
+
+.glow170-carousel .carousel-nav .carousel-background {
+	top:0;
+	background-position:-60px 0;
+	background-repeat:repeat-y;
+}
+
+.glow170-carousel .carousel-nav .carousel-top {
+	top:0;
+	background-position:0 0;
+}
+
+.glow170-carousel .carousel-nav .carousel-bottom {
+	bottom:0;
+	background-position:-30px bottom;
+}
+
+.glow170-carousel .carousel-nav .carousel-arrow {
+	width:10px;
+	top:0;
+	left:10px;
+	background-repeat:no-repeat;
+}
+
+.glow170-carousel .carousel-prev .carousel-arrow {
+	background-position:-90px center;
+}
+
+.glow170-carousel .carousel-next .carousel-arrow {
+	background-position:-101px center;
+}
+
+.glow170-carousel .carousel-prev-disabled,
+.glow170-carousel .carousel-next-disabled,
+.glow170-vCarousel .carousel-prev-disabled,
+.glow170-vCarousel .carousel-next-disabled,
+.glow170-carousel .carousel-prev-disabled a,
+.glow170-carousel .carousel-next-disabled a,
+.glow170-vCarousel .carousel-prev-disabled a,
+.glow170-vCarousel .carousel-next-disabled a {
+	cursor: default;
+}
+
+.glow170-carousel .carousel-prev-disabled .carousel-arrow {
+	background-position:-112px center;
+}
+
+.glow170-carousel .carousel-next-disabled .carousel-arrow {
+	background-position:-123px center;
+}
+
+/* Vertical Themes */
+
+/* Light Theme - Vertical */
+
+.glow170-vCarousel .carousel-light .carousel-window {
+	background:#f0f0f0;
+}
+
+.glow170-vCarousel .carousel-light .carousel-nav {
+	background:#f0f0f0;
+	color:#000;
+	height:30px;
+}
+
+.glow170-vCarousel .carousel-light .carousel-nav span {
+	background-image:url(images/carousel/lightv.png);
+}
+
+/* Dark Theme - Vertical */
+.glow170-vCarousel .carousel-dark .carousel-window {
+	background:#282828;
+}
+
+.glow170-vCarousel .carousel-dark .carousel-nav {
+	background:#282828;
+	color:#fff;
+	height:30px;
+}
+
+.glow170-vCarousel .carousel-dark .carousel-nav span {
+	background-image:url(images/carousel/darkv.png);
+}
+
+.glow170-vCarousel .carousel-nav span {
+	background-repeat:no-repeat;
+	overflow:hidden;
+}
+
+.glow170-vCarousel .carousel-nav .carousel-background {
+	background-position:0 -60px;
+	background-repeat:repeat-x;
+}
+
+.glow170-vCarousel .carousel-nav .carousel-top {
+	background-position:right 0;
+}
+
+.glow170-vCarousel .carousel-nav .carousel-bottom {
+	background-position:left -30px;
+}
+
+.glow170-vCarousel .carousel-nav .carousel-arrow {
+	top:10px;
+	height:10px;
+}
+
+.glow170-vCarousel .carousel-prev .carousel-arrow {
+	background-position:center -90px;
+}
+
+.glow170-vCarousel .carousel-next .carousel-arrow {
+	background-position:center -101px;
+}
+
+.glow170-vCarousel .carousel-prev-disabled .carousel-arrow {
+	background-position:center -112px;
+}
+
+.glow170-vCarousel .carousel-next-disabled .carousel-arrow {
+	background-position:center -123px;
+}
+
+/* Paged Carousel */
+.glow170-vCarousel .carousel-window.paged { float: left; }
+
+.glow170-carousel .pageNav,
+.glow170-vCarousel .pageNav {
+	display: block;
+	padding: 0px;
+	height: 20px;
+	width: auto;
+	clear: both;
+	margin: 0 auto;
+}
+
+.glow170-vCarousel .pageNav {
+	height: auto;
+	float: left;
+	width: 20px;
+	clear: none;
+	margin: auto 0;
+}
+
+.glow170-carousel .dotLabel,
+.glow170-vCarousel .dotLabel {
+	width: 20px;
+	height: 20px;
+	overflow: hidden;
+	text-indent: -5000px; /* move text away when images are enabled */
+	padding: 0;
+	margin: 0;
+	display: block;
+}
+
+.glow170-basic .glow170-carousel .dot .dotLabel,
+.glow170-basic .glow170-vCarousel .dot .dotLabel {
+	overflow: visible;
+	text-indent: 0; /* images are disabled, so move text back, but not for arrows */
+}
+
+.glow170-carousel .pageNav li,
+.glow170-vCarousel .pageNav li {
+	width: 20px;
+	height: 20px;
+	padding: 0px;
+	margin: 0px;
+	float: left;
+	list-style-type: none;
+	color: #000;
+	background-image: url(images/carousel/lightdots.png);
+	background-repeat: no-repeat;
+	background-position: -20px 0;
+}
+
+.glow170-carousel .pageNav .dot {
+	cursor: pointer;
+}
+
+.glow170-carousel .carousel-dark .pageNav li,
+.glow170-vCarousel .carousel-dark .pageNav li {
+	color: #fff;
+	background-image: url(images/carousel/darkdots.png);
+}
+
+.glow170-vCarousel .pageNav li {
+	background-image: url(images/carousel/lightdotsv.png);
+	float: none;
+}
+
+.glow170-vCarousel .carousel-dark .pageNav li { background-image: url(images/carousel/darkdotsv.png); }
+.glow170-carousel .pageNav li.dotActive,
+.glow170-vCarousel .pageNav li.dotActive { background-position: -20px -20px; }
+.glow170-basic .glow170-carousel .pageNav li.dotActive,
+.glow170-basic .glow170-vCarousel .pageNav li.dotActive { text-decoration: underline; }
+.glow170-carousel .pageNav li#rightarrow,
+.glow170-vCarousel .pageNav li#rightarrow { background-position: -40px -20px; }
+
+.glow170-basic .glow170-carousel .pageNav li#rightarrow .dotLabel {
+	width: 0;
+	height: 0;
+	border-top: 8px solid #fff;
+	border-right: 8px solid #fff;
+	border-bottom: 8px solid #fff;
+	border-left: 8px solid #000;
+}
+
+.glow170-basic .glow170-vCarousel .pageNav li#rightarrow .dotLabel {
+	width: 0;
+	height: 0;
+	border-top: 8px solid #000;
+	border-right: 8px solid #fff;
+	border-bottom: 8px solid #fff;
+	border-left: 8px solid #fff;
+}
+
+.glow170-carousel .pageNav li.carousel-next-disabled#rightarrow,
+.glow170-vCarousel .pageNav li.carousel-next-disabled#rightarrow { background-position: -40px 0; }
+
+.glow170-basic .glow170-carousel .pageNav li.carousel-next-disabled#rightarrow .dotLabel,
+.glow170-basic .glow170-vCarousel .pageNav li.carousel-next-disabled#rightarrow .dotLabel {
+	width: 0;
+	height: 0;
+	border-top: 8px solid #fff;
+	border-right: 8px solid #fff;
+	border-bottom: 8px solid #fff;
+	border-left: 8px solid #ccc;
+}
+
+.glow170-basic .glow170-vCarousel .pageNav li.carousel-next-disabled#rightarrow .dotLabel {
+	width: 0;
+	height: 0;
+	border-top: 8px solid #ccc;
+	border-right: 8px solid #fff;
+	border-bottom: 8px solid #fff;
+	border-left: 8px solid #fff;
+}
+
+.glow170-carousel .pageNav li#leftarrow,
+.glow170-vCarousel .pageNav li#leftarrow { background-position: 0 -20px; }
+
+.glow170-basic .glow170-carousel .pageNav li#leftarrow .dotLabel {
+	width: 0;
+	height: 0;
+	border-top: 8px solid #fff;
+	border-right: 8px solid #000;
+	border-bottom: 8px solid #fff;
+	border-left: 8px solid #fff;
+}
+
+.glow170-basic .glow170-vCarousel .pageNav li#leftarrow .dotLabel {
+	width: 0;
+	height: 0;
+	border-top: 8px solid #fff;
+	border-right: 8px solid #fff;
+	border-bottom: 8px solid #000;
+	border-left: 8px solid #fff;
+}
+
+.glow170-carousel .pageNav li.carousel-prev-disabled#leftarrow,
+.glow170-vCarousel .pageNav li.carousel-prev-disabled#leftarrow { background-position: 0 0; }
+
+.glow170-basic .glow170-carousel .pageNav li.carousel-prev-disabled#leftarrow .dotLabel {
+	width: 0;
+	height: 0;
+	border-top: 8px solid #fff;
+	border-right: 8px solid #ccc;
+	border-bottom: 8px solid #fff;
+	border-left: 8px solid #fff;
+}
+
+.glow170-basic .glow170-vCarousel .pageNav li.carousel-prev-disabled#leftarrow .dotLabel {
+	width: 0;
+	height: 0;
+	border-top: 8px solid #fff;
+	border-right: 8px solid #fff;
+	border-bottom: 8px solid #ccc;
+	border-left: 8px solid #fff;
+}
+/* SLIDER */
+
+.glow170-slider,
+.glow170-vSlider {
+	position: relative;
+	zoom: 1;
+}
+
+.glow170-slider .slider-container,
+.glow170-vSlider .slider-container {
+	position: relative;
+	zoom: 1;
+	padding: 4px 17px 6px 17px;
+}
+
+.glow170-slider:focus,
+.glow170-vSlider:focus {
+	outline: none;
+	border: none;
+}
+
+/* track */
+	.glow170-slider .slider-track,
+	.glow170-vSlider .slider-track {
+		position: relative;
+		/* for IE */
+		font-size: 0;
+		zoom: 1;
+	}
+	.glow170-slider .slider-trackOff,
+	.glow170-vSlider .slider-trackOff {
+		height: 8px;
+		background: url(images/slider/lighth.png) 100% 0;
+		margin-left: 2px;
+		/* for IE */
+		font-size: 0;
+	}
+	.glow170-slider .slider-trackOn,
+	.glow170-vSlider .slider-trackOn {
+		/* width of this is set via js */
+		position: absolute;
+		height: 8px;
+		top: 0; left: 0;
+		background: url(images/slider/lighth.png) -2px -8px;
+		z-index: 2;
+		overflow: hidden;
+	}
+
+	.glow170-slider .slider-handle,
+	.glow170-vSlider .slider-handle {
+		/* left position of this is set via js */
+		position: absolute;
+		top: -4px;
+		width: 17px; height: 18px;
+		background: url(images/slider/lighth.png) 0px -16px;
+		z-index: 3;
+		cursor: pointer;
+	}
+
+/* buttons */
+
+	.glow170-slider .slider-btn-bk,
+	.glow170-slider .slider-btn-fwd,
+	.glow170-vSlider .slider-btn-bk,
+	.glow170-vSlider .slider-btn-fwd {
+		position: absolute;
+		width: 12px; height: 12px;
+		top: 2px; left: 0;
+		background: url(images/slider/lighth.png) 0px -34px;
+		font-size: 0;
+		cursor: pointer;
+	}
+	.glow170-slider .slider-btn-fwd {
+		background-position: -12px -34px;
+		left: 100%;
+		margin-left: -12px;
+	}
+
+/* active state */
+
+	.glow170-slider .slider-active .slider-handle {
+		background-position: -17px -16px;
+	}
+
+/* disabled state */
+
+	.glow170-slider .slider-disabled .slider-handle {
+		background-position: -34px -16px;
+	}
+	.glow170-slider .slider-disabled .slider-btn-bk {
+		background-position: -24px -34px;
+	}
+	.glow170-slider .slider-disabled .slider-btn-fwd {
+		background-position: -36px -34px;
+	}
+	.glow170-slider .slider-disabled .slider-trackOn {
+		background-position: -2px 0;
+	}
+
+	.glow170-slider  .slider-disabled .slider-btn-bk,
+	.glow170-slider  .slider-disabled .slider-btn-fwd,
+	.glow170-slider  .slider-disabled .slider-handle,
+	.glow170-vSlider .slider-disabled .slider-btn-bk,
+	.glow170-vSlider .slider-disabled .slider-btn-fwd,
+	.glow170-vSlider .slider-disabled .slider-handle {
+		cursor: auto;
+	}
+
+/* no buttons */
+	.glow170-slider .slider-noButtons .slider-container {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.glow170-slider .slider-noButtons .slider-btn-bk,
+	.glow170-slider .slider-noButtons .slider-btn-fwd,
+	.glow170-vSlider .slider-noButtons .slider-btn-bk,
+	.glow170-vSlider .slider-noButtons .slider-btn-fwd {
+		display: none;
+	}
+
+/* labels */
+	.glow170-slider .slider-labels {
+		margin: 10px 8px 0;
+	}
+	.glow170-vSlider .slider-labels {
+		position: absolute;
+		left: 22px; top: 25px;
+	}
+
+	.glow170-vSlider .slider-noButtons .slider-labels {
+		top: 8px;
+	}
+
+	.glow170-slider .slider-labels .ruler-tickMajor,
+	.glow170-slider .slider-labels .ruler-tickMinor,
+	.glow170-vSlider .slider-labels .ruler-tickMajor,
+	.glow170-vSlider .slider-labels .ruler-tickMinor {
+		background: #6e6e6e;
+	}
+	.glow170-slider .slider-labels .ruler-label,
+	.glow170-vSlider .slider-labels .ruler-label {
+		color: #6e6e6e;
+		cursor: pointer;
+	}
+
+
+/* vertical */
+	.glow170-vSlider .slider-trackOff,
+	.glow170-vSlider .slider-trackOn,
+	.glow170-vSlider .slider-handle,
+	.glow170-vSlider .slider-btn-bk,
+	.glow170-vSlider .slider-btn-fwd	{
+		background-image: url(images/slider/lightv.png);
+	}
+
+	.glow170-vSlider .slider-container {
+		padding: 17px 0;
+	}
+
+	.glow170-vSlider .slider-track {
+		margin: 0;
+		overflow: hidden;
+		zoom: 1;
+		width: 20px;
+	}
+
+	.glow170-vSlider .slider-trackOff {
+		width: 8px;
+		height: auto;
+		background-position: 0 0;
+		position: absolute;
+		margin: 0;
+		left: 4px; top: 0;
+		z-index: 2;
+	}
+
+	.glow170-vSlider .slider-trackOn {
+		width: 8px;
+		height: 0;
+		position: relative;
+		margin: 0 0 0 4px;
+		background-position: -8px 100%;
+		top: 2px; left: 0;
+		z-index: 1;
+	}
+
+	.glow170-vSlider .slider-handle {
+		top: 0; left: 0;
+		width: 18px; height: 17px;
+		background-position: -16px 100%;
+	}
+
+	.glow170-vSlider .slider-btn-bk,
+	.glow170-vSlider .slider-btn-fwd {
+		top: 0; left: 2px;
+		background-position: -34px -1976px;
+	}
+
+	.glow170-vSlider .slider-btn-bk {
+		background-position: -34px 100%;
+		left: 2px; top: 100%;
+		margin: -12px 0 0 0;
+	}
+
+	.glow170-vSlider .slider-active .slider-handle {
+		background-position: -16px -1966px;
+	}
+	.glow170-vSlider .slider-disabled .slider-handle {
+		background-position: -16px -1949px;
+	}
+	.glow170-vSlider .slider-disabled .slider-btn-bk {
+		background-position: -34px -1964px;
+	}
+	.glow170-vSlider .slider-disabled .slider-btn-fwd {
+		background-position: -34px -1952px;
+	}
+	.glow170-vSlider .slider-disabled .slider-trackOn {
+		background-position: 0 100%;
+	}
+
+	.glow170-vSlider .slider-noButtons .slider-container {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+
+/* Dark theme */
+	.glow170-slider .slider-dark .slider-trackOff,
+	.glow170-slider .slider-dark .slider-trackOn,
+	.glow170-slider .slider-dark .slider-handle,
+	.glow170-slider .slider-dark .slider-btn-bk,
+	.glow170-slider .slider-dark .slider-btn-fwd	{
+		background-image: url(images/slider/darkh.png);
+	}
+
+	.glow170-vSlider .slider-dark .slider-trackOff,
+	.glow170-vSlider .slider-dark .slider-trackOn,
+	.glow170-vSlider .slider-dark .slider-handle,
+	.glow170-vSlider .slider-dark .slider-btn-bk,
+	.glow170-vSlider .slider-dark .slider-btn-fwd {
+		background-image: url(images/slider/darkv.png);
+	}
+
+	.glow170-slider .slider-dark .slider-labels .ruler-tickMajor,
+	.glow170-slider .slider-dark .slider-labels .ruler-tickMinor,
+	.glow170-vSlider .slider-dark .slider-labels .ruler-tickMajor,
+	.glow170-vSlider .slider-dark .slider-labels .ruler-tickMinor {
+		background: #e2e2e2;
+	}
+	.glow170-slider .slider-dark .slider-labels .ruler-label,
+	.glow170-vSlider .slider-dark .slider-labels .ruler-label {
+		color: #e2e2e2;
+	}
+
+/* Gosh! No Images! */
+
+	.glow170-basic .glow170-slider .slider-handle,
+	.glow170-basic .glow170-vSlider .slider-handle {
+		border-style: solid;
+		border-color: #777 #fff;
+		border-width: 18px 8px 0 9px;
+		width: 0;
+		height: 0;
+		font-size: 0;
+	}
+
+	.glow170-basic .glow170-vSlider .slider-handle {
+		border-width: 8px 0 9px 18px;
+		border-color: #fff #777;
+	}
+
+	.glow170-basic .glow170-slider .slider-trackOff,
+	.glow170-basic .glow170-vSlider .slider-trackOff {
+		background: #d6d6d6;
+	}
+	.glow170-basic .glow170-slider .slider-trackOn,
+	.glow170-basic .glow170-vSlider .slider-trackOn {
+		background: #777;
+	}
+
+	.glow170-basic .glow170-slider .slider-btn-bk,
+	.glow170-basic .glow170-slider .slider-btn-fwd,
+	.glow170-basic .glow170-vSlider .slider-btn-bk,
+	.glow170-basic .glow170-vSlider .slider-btn-fwd {
+		border-style: solid;
+		border-color: #fff #777;
+		border-width: 6px 0 6px 12px;
+		width: 0; height: 0;
+	}
+
+	.glow170-basic .glow170-slider .slider-btn-bk {
+		border-width: 6px 12px 6px 0;
+	}
+
+	.glow170-basic .glow170-vSlider .slider-btn-bk {
+		border-color: #666 #fff;
+		border-width: 12px 6px 0 6px;
+	}
+
+	.glow170-basic .glow170-vSlider .slider-btn-fwd {
+		border-color: #666 #fff;
+		border-width: 0 6px 12px 6px;
+	}
+
+	/* active */
+		.glow170-basic .glow170-slider .slider-active .slider-handle {
+			border-color: #000 #fff;
+		}
+		.glow170-basic .glow170-vSlider .slider-active .slider-handle {
+			border-color: #fff #000;
+		}
+
+	/* disabled */
+		.glow170-basic .glow170-slider .slider-disabled .slider-trackOn,
+		.glow170-basic .glow170-vSlider .slider-disabled .slider-trackOn {
+			background: #d6d6d6;
+		}
+		.glow170-basic .glow170-slider .slider-disabled .slider-handle {
+			border-color: #d6d6d6 #fff;
+		}
+		.glow170-basic .glow170-vSlider .slider-disabled .slider-handle {
+			border-color: #fff #d6d6d6;
+		}
+		.glow170-basic .glow170-slider .slider-disabled .slider-btn-bk,
+		.glow170-basic .glow170-slider .slider-disabled .slider-btn-fwd {
+			border-color: #fff #d6d6d6;
+		}
+		.glow170-basic .glow170-vSlider .slider-disabled .slider-btn-bk,
+		.glow170-basic .glow170-vSlider .slider-disabled .slider-btn-fwd {
+			border-color: #d6d6d6 #fff;
+		}
+
+/* no images - dark */
+	.glow170-basic .glow170-slider .slider-dark .slider-handle {
+		border-color: #ccc #000;
+	}
+
+	.glow170-basic .glow170-vSlider .slider-dark .slider-handle {
+		border-color: #000 #ccc;
+	}
+
+	.glow170-basic .glow170-slider .slider-dark .slider-trackOff,
+	.glow170-basic .glow170-vSlider .slider-dark .slider-trackOff {
+		background: #555;
+	}
+	.glow170-basic .glow170-slider .slider-dark .slider-trackOn,
+	.glow170-basic .glow170-vSlider .slider-dark .slider-trackOn {
+		background: #ccc;
+	}
+
+	.glow170-basic .glow170-slider .slider-dark .slider-btn-bk,
+	.glow170-basic .glow170-slider .slider-dark .slider-btn-fwd {
+		border-color: #000 #ccc;
+	}
+
+	.glow170-basic .glow170-vSlider .slider-dark .slider-btn-bk,
+	.glow170-basic .glow170-vSlider .slider-dark .slider-btn-fwd {
+		border-color: #ccc #000;
+	}
+
+	/* active */
+		.glow170-basic .glow170-slider .slider-dark .slider-active .slider-handle {
+			border-color: #fff #000;
+		}
+		.glow170-basic .glow170-vSlider .slider-dark .slider-active .slider-handle {
+			border-color: #000 #fff;
+		}
+
+	/* disabled */
+		.glow170-basic .glow170-slider .slider-dark .slider-disabled .slider-trackOn,
+		.glow170-basic .glow170-vSlider .slider-dark .slider-disabled .slider-trackOn {
+			background: #555;
+		}
+		.glow170-basic .glow170-slider .slider-dark .slider-disabled .slider-handle {
+			border-color: #555 #000;
+		}
+		.glow170-basic .glow170-vSlider .slider-dark .slider-disabled .slider-handle {
+			border-color: #000 #555;
+		}
+		.glow170-basic .glow170-slider .slider-dark .slider-disabled .slider-btn-bk,
+		.glow170-basic .glow170-slider .slider-dark .slider-disabled .slider-btn-fwd {
+			border-color: #000 #555;
+		}
+		.glow170-basic .glow170-vSlider .slider-dark .slider-disabled .slider-btn-bk,
+		.glow170-basic .glow170-vSlider .slider-dark .slider-disabled .slider-btn-fwd {
+			border-color: #555 #000;
+		}
+
+/* RULER */
+
+	.glow170-ruler,
+	.glow170-vRuler {
+		position: relative;
+		zoom: 1;
+	}
+
+	.glow170-ruler .ruler-tickMajor,
+	.glow170-ruler .ruler-tickMinor,
+	.glow170-vRuler .ruler-tickMajor,
+	.glow170-vRuler .ruler-tickMinor {
+		position: absolute;
+		background: #000;
+		width: 1px; height: 1px;
+		top: 0; left: 0;
+		overflow: hidden;
+	}
+
+	.glow170-ruler .ruler-tickMajor,
+	.glow170-ruler .ruler-spacer {
+		height: 10px;
+	}
+	.glow170-ruler .ruler-tickMinor {
+		height: 2px;
+	}
+	.glow170-vRuler .ruler-tickMajor {
+		width: 10px;
+	}
+	.glow170-vRuler .ruler-tickMinor {
+		width: 2px;
+	}
+
+	.glow170-ruler .ruler-labels {
+		position: relative;
+		height: 1.2em;
+	}
+	.glow170-vRuler .ruler-labels {
+		position: absolute;
+		top: 0; left: 15px;
+		height: 100%;
+	}
+
+	.glow170-ruler .ruler-label,
+	.glow170-vRuler .ruler-label {
+		position: absolute;
+		top: 0; left: 0;
+	}
+	.glow170-ruler .ruler-label {
+		text-align: center;
+	}
+	.glow170-ruler .ruler-label span {
+		position: relative;
+		left: -50%;
+	}
+	.glow170-vRuler .ruler-label {
+		/*line-height: 0;*/
+		margin-top: -0.56em;
+	}
+/* TIMETABLE */
+	.glow170-vTimetable .timetable-container,
+	.glow170-Timetable .timetable-container {
+		overflow: hidden;
+		position: relative;
+		zoom: 1;
+	}
+	.glow170-vTimetable .timetable-innerView,
+	.glow170-Timetable .timetable-innerView {
+		/*border: 2px solid #000;*/
+		background: #fff;
+		overflow: hidden;
+		position: relative;
+		zoom: 1;
+	}
+	.glow170-vTimetable .timetable-innerView {
+		float: left;
+	}
+	.glow170-vTimetable .timetable-dragArea,
+	.glow170-vTimetable .timetable-track,
+	.glow170-vTimetable .timetable-item,
+	.glow170-vTimetable .timetable-bandOdd,
+	.glow170-vTimetable .timetable-bandEven,
+	.glow170-vTimetable .timetable-scale,
+	.glow170-vTimetable .timetable-scaleItem,
+	.glow170-Timetable .timetable-dragArea,
+	.glow170-Timetable .timetable-track,
+	.glow170-Timetable .timetable-item,
+	.glow170-Timetable .timetable-bandOdd,
+	.glow170-Timetable .timetable-bandEven,
+	.glow170-Timetable .timetable-scale,
+	.glow170-Timetable .timetable-scaleItem {
+		position: absolute;
+		top: 0; left: 0;
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+		z-index: 2;
+	}
+
+	.glow170-vTimetable .timetable-dragRange,
+	.glow170-Timetable .timetable-dragRange {
+		height: 100%;
+		width: 100%;
+	}
+
+
+	.glow170-vTimetable .timetable-track,
+	.glow170-Timetable .timetable-track {
+		border: 1px solid #a0a0a0;
+		border-width: 0 1px;
+		margin-right: 2px;
+	}
+	.glow170-vTimetable .timetable-track {
+		border-width: 0 1px;
+		margin-right: 1px;
+	}
+	.glow170-Timetable .timetable-track {
+		border-width: 1px 0;
+		margin-bottom: 1px;
+	}
+	.glow170-vTimetable .timetable-scale,
+	.glow170-Timetable .timetable-scale {
+		color: #a0a0a0;
+		font-size: x-large;
+		border: 1px solid #ccc;
+	}
+	.glow170-vTimetable .timetable-scale {
+		text-align: center;
+	}
+
+	.glow170-vTimetable .timetable-scalePrimary {
+		border-width: 0 0 0 1px;
+	}
+	.glow170-vTimetable .timetable-scaleSecondary {
+		border-width: 0 1px 0 0;
+	}
+	.glow170-Timetable .timetable-scalePrimary {
+		border-width: 1px 0 0 0;
+	}
+	.glow170-Timetable .timetable-scaleSecondary {
+		border-width: 0 0 1px 0;
+	}
+
+	.glow170-vTimetable .timetable-track-footers {
+		clear: both;
+	}
+
+/* temporary values to make it visible but out of the way during dev
+	.glow170-vTimetable .timetable-accessibility-navigation,
+	.glow170-Timetable .timetable-accessibility-navigation {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}*/
+
+	.glow170-vTimetable .timetable-accessibility-navigation,
+	.glow170-Timetable .timetable-accessibility-navigation,
+	.glow170-vTimetable .timetable-accessibility-hidden,
+	.glow170-Timetable .timetable-accessibility-hidden {
+		position: absolute;
+		height: 1px;
+		width: 1px;
+		overflow: hidden;
+	}
+
+	.glow170-vTimetable .timetable-track-headers,
+	.glow170-vTimetable .timetable-track-footers,
+	.glow170-Timetable .timetable-track-headers,
+	.glow170-Timetable .timetable-track-footers {
+		position: relative;
+	}
+
+	.glow170-vTimetable .timetable-header-holder,
+	.glow170-vTimetable .timetable-footer-holder,
+	.glow170-Timetable .timetable-header-holder,
+	.glow170-Timetable .timetable-footer-holder {
+		position: absolute;
+		top: 0;
+		left: 0;
+		overflow: hidden;
+		color: #fff;
+		background: #424242;
+		text-align: center;
+	}
+	.glow170-Timetable .timetable-track-headers,
+	.glow170-Timetable .timetable-track-footers,
+	.glow170-Timetable .timetable-scrollView {
+		float: left;
+	}
+	.glow170-Timetable .timetable-header-holder,
+	.glow170-Timetable .timetable-footer-holder {
+		width: 100px;
+	}
+
+	.glow170-vTimetable .timetable-track-headers,
+	.glow170-vTimetable .timetable-track-footers,
+	.glow170-Timetable .timetable-track-headers,
+	.glow170-Timetable .timetable-track-footers {
+		background: #fff;
+		border: 1px solid #ccc;
+	}
+	.glow170-vTimetable .timetable-track-headers {
+		border-bottom-width: 0
+	}
+	.glow170-vTimetable .timetable-track-footers {
+		border-top-width: 0
+	}
+	.glow170-Timetable .timetable-track-headers {
+		border-right-width: 0
+	}
+	.glow170-Timetable .timetable-track-footers {
+		border-left-width: 0
+	}
+
+	.glow170-vTimetable .timetable-track-headers div.timetable-header-content,
+	.glow170-vTimetable .timetable-track-footers div.timetable-footer-content,
+	.glow170-Timetable .timetable-track-headers div.timetable-header-content,
+	.glow170-Timetable .timetable-track-footers div.timetable-footer-content {
+		padding: 9px 0;
+	}
+
+	.glow170-Timetable .timetable-track-headers div.timetable-header-content,
+	.glow170-Timetable .timetable-track-footers div.timetable-footer-content {
+		padding: 4px 5px;
+		text-align: left;
+	}
+	/* we use !important beacuse it's impoartant these items aren't affected by margins or padding */
+	.glow170-vTimetable .timetable-trackList,
+	.glow170-Timetable .timetable-trackList {
+		margin: 0 !important;
+		padding: 0 !important;
+		list-style: none;
+	}
+	.glow170-vTimetable .timetable-item,
+	.glow170-Timetable .timetable-item {
+		border: 1px solid #ccc;
+		margin: 0 !important;
+		padding: 0 !important;
+		display: block;
+	}
+	.glow170-vTimetable .timetable-item {
+		border-width: 1px 0;
+	}
+	.glow170-Timetable .timetable-item {
+		border-width: 0 1px;
+	}
+	.glow170-vTimetable .timetable-itemHangingOffStart .timetable-itemContent,
+	.glow170-Timetable .timetable-itemHangingOffStart .timetable-itemContent {
+		opacity: 0.3;
+		filter: alpha(opacity=30);
+		zoom: 1;
+	}
+	.glow170-vTimetable .timetable-itemHangingClipping .timetable-itemContent,
+	.glow170-Timetable .timetable-itemHangingClipping .timetable-itemContent {
+		height: 1px;
+		overflow: hidden;
+	}
+	.glow170-vTimetable .timetable-hideitems .timetable-item {
+		display: none;
+	}
+	/* banding */
+		.glow170-vTimetable .timetable-bandOdd,
+		.glow170-vTimetable .timetable-bandEven,
+		.glow170-Timetable .timetable-bandOdd,
+		.glow170-Timetable .timetable-bandEven {
+			z-index: 1;
+		}
+		.glow170-vTimetable .timetable-bandOdd,
+		.glow170-Timetable .timetable-bandOdd {
+			background: #ebebeb;
+		}
+	/* end banding */
+
+	.glow170-vTimetable .timetable-default-track-header {
+		position: absolute;
+		height: 1px;
+		width: 1px;
+		overflow: hidden;
+	}
+
+	/* scrollbar nav */
+		.glow170-vTimetable .timetable-scrollbar1,
+		.glow170-vTimetable .timetable-scrollbar2,
+		.glow170-Timetable .timetable-scrollbar1,
+		.glow170-Timetable .timetable-scrollbar2 {
+			display: none;
+		}
+	
+		.glow170-vTimetable .timetable-scrollbar1,
+		.glow170-vTimetable .timetable-scrollbar2 {
+			float: left;
+			/* this foces IE6 to make the scrollbars shrink to fit */
+			_width: 0;
+		}
+
+		.glow170-vTimetable .timetable-scrollbar .slider-container,
+		.glow170-Timetable .timetable-scrollbar .slider-container {
+			padding: 21px 0;
+			border: 1px solid #a0a0a0;
+		}
+		.glow170-Timetable .timetable-scrollbar .slider-container {
+			padding: 0 21px;
+		}
+		.glow170-vTimetable .timetable-scrollbar2 .slider-container {
+			border-left-width: 0;
+		}
+		.glow170-vTimetable .timetable-scrollbar1 .slider-container {
+			border-right-width: 0;
+		}
+		.glow170-Timetable .timetable-scrollbar2 .slider-container {
+			border-top-width: 0;
+		}
+		.glow170-Timetable .timetable-scrollbar1 .slider-container {
+			border-bottom-width: 0;
+		}
+		.glow170-vTimetable .timetable-scrollbar .slider-handle,
+		.glow170-Timetable .timetable-scrollbar .slider-handle {
+			/* using opacity because IE6 lets you click 'through' elements with a transparent bg */
+			width: 100%;
+			height: 100%;
+			background: #fff;
+			opacity: 0;
+			filter: alpha(opacity=0);
+			top: 0;
+		}
+		.glow170-vTimetable .timetable-scrollbar .slider-track,
+		.glow170-Timetable .timetable-scrollbar .slider-track {
+			background: none;
+		}
+		.glow170-vTimetable .timetable-scrollbarLabels,
+		.glow170-Timetable .timetable-scrollbarLabels {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background: #fff;
+			color: #227db7;
+			font-size: small;
+			text-align: center;
+			top: 0; left: 0;
+			overflow: hidden;
+		}
+
+		.glow170-vTimetable .slider-labels,
+		.glow170-Timetable .slider-labels {
+			display: none;
+		}
+
+		.glow170-vTimetable .timetable-scrollbarLabelsHighlight,
+		.glow170-Timetable .timetable-scrollbarLabelsHighlight {
+			background: #424242;
+			color: #fff;
+			z-index: 1;
+			overflow: hidden;
+		}
+
+		.glow170-vTimetable .timetable-scrollbar .slider-trackOn,
+		.glow170-vTimetable .timetable-scrollbar .slider-trackOff,
+		.glow170-Timetable .timetable-scrollbar .slider-trackOn,
+		.glow170-Timetable .timetable-scrollbar .slider-trackOff {
+			background: none;
+		}
+
+		.glow170-vTimetable .timetable-scrollbarItem,
+		.glow170-Timetable .timetable-scrollbarItem {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0; left: 0;
+		}
+
+		.glow170-vTimetable .timetable-scrollbar .slider-btn-bk,
+		.glow170-vTimetable .timetable-scrollbar .slider-btn-fwd,
+		.glow170-Timetable .timetable-scrollbar .slider-btn-bk,
+		.glow170-Timetable .timetable-scrollbar .slider-btn-fwd {
+			background: url(images/timetable/lightv.png) top center;
+			border: 1px solid #a0a0a0;
+		}
+
+		.glow170-vTimetable .timetable-scrollbar .slider-btn-bk,
+		.glow170-vTimetable .timetable-scrollbar .slider-btn-fwd {
+			height: 20px;
+			left: 0;
+			border-width: 0 0 1px 0;
+		}
+		.glow170-Timetable .timetable-scrollbar .slider-btn-bk,
+		.glow170-Timetable .timetable-scrollbar .slider-btn-fwd {
+			background: url(images/timetable/lighth.png) right center;
+			width: 20px;
+			top: 0;
+			border-width: 0 0 0 1px;
+		}
+		.glow170-vTimetable .timetable-scrollbar .slider-btn-bk {
+			background-position: center bottom;
+			border-width: 1px 0 0 0;
+			margin: -21px 0 0;
+		}
+		.glow170-Timetable .timetable-scrollbar .slider-btn-bk {
+			background-position: left center;
+			border-width: 0 1px 0 0;
+			z-index: 1;
+		}
+		.glow170-Timetable .timetable-scrollbar .slider-btn-fwd {
+			margin-left: -21px;
+		}
+	/* scrollbar nav end */
+
+	/* dark theme */
+		.glow170-vTimetable .timetable-dark .timetable-scrollbarLabels,
+		.glow170-Timetable .timetable-dark .timetable-scrollbarLabels {
+			background-color: #333;
+		}
+
+		.glow170-vTimetable .timetable-dark .timetable-header-holder,
+		.glow170-vTimetable .timetable-dark .timetable-footer-holder,
+		.glow170-Timetable .timetable-dark .timetable-header-holder,
+		.glow170-Timetable .timetable-dark .timetable-footer-holder,
+		.glow170-vTimetable .timetable-dark .timetable-scrollbarLabelsHighlight,
+		.glow170-Timetable .timetable-dark .timetable-scrollbarLabelsHighlight {
+			background: #121212;
+		}
+
+		.glow170-vTimetable .timetable-dark .timetable-innerView,
+		.glow170-Timetable .timetable-dark .timetable-innerView {
+			background: #333333;
+			color: #ccc;
+		}
+
+		.glow170-vTimetable .timetable-dark .timetable-scale,
+		.glow170-Timetable .timetable-dark .timetable-scale {
+			color: #ccc;
+		}
+
+		.glow170-vTimetable .timetable-dark .timetable-item,
+		.glow170-Timetable .timetable-dark .timetable-item,
+		.glow170-vTimetable .timetable-dark .timetable-track,
+		.glow170-Timetable .timetable-dark .timetable-track,
+		.glow170-vTimetable .timetable-dark .timetable-scrollbar .slider-btn-bk,
+		.glow170-vTimetable .timetable-dark .timetable-scrollbar .slider-btn-fwd,
+		.glow170-Timetable .timetable-dark .timetable-scrollbar .slider-btn-bk,
+		.glow170-Timetable .timetable-dark .timetable-scrollbar .slider-btn-fwd,
+		.glow170-vTimetable .timetable-dark .timetable-scrollbar .slider-container,
+		.glow170-Timetable .timetable-dark .timetable-scrollbar .slider-container,
+		.glow170-vTimetable .timetable-dark .timetable-scale,
+		.glow170-Timetable .timetable-dark .timetable-scale {
+			border-color: #141414;
+		}
+
+		.glow170-vTimetable .timetable-dark .timetable-bandOdd,
+		.glow170-Timetable .timetable-dark .timetable-bandOdd {
+			background-color: #242424;
+		}
+
+		.glow170-vTimetable .timetable-dark .timetable-scrollbar .slider-btn-bk,
+		.glow170-vTimetable .timetable-dark .timetable-scrollbar .slider-btn-fwd {
+			background-image: url(images/timetable/darkv.png);
+		}
+		.glow170-Timetable .timetable-dark .timetable-scrollbar .slider-btn-bk,
+		.glow170-Timetable .timetable-dark .timetable-scrollbar .slider-btn-fwd {
+			background-image: url(images/timetable/darkh.png);
+		}
+		.glow170-vTimetable .timetable-dark .timetable-track-headers,
+		.glow170-vTimetable .timetable-dark .timetable-track-footers,
+		.glow170-Timetable .timetable-dark .timetable-track-headers,
+		.glow170-Timetable .timetable-dark .timetable-track-footers {
+			border: none;
+			background: #333;
+		}
+	/* dark theme end */
+/* END TIMETABLE */
+/* EDITOR */
+		.glow170-editor {
+			border: 1px solid #000;
+			font-size: medium;
+		}
+
+		.glow170-editor .editor-toolbar
+		{
+			border: none;
+			display: block;
+			margin: 0;
+			padding: 0;
+			background-color: #EFEFEF;
+		}
+
+		.glow170-editor .editor-toolbar legend { display: none; }
+		.glow170-editor .editor-toolbar-tools h3 { display: none; }
+
+		.glow170-editor ul.editor-toolbar-tools
+		{
+			display: block;
+			margin: 0 !important;
+			padding: 9px !important;
+			overflow: hidden;
+			zoom: 1;
+		}
+
+		.glow170-editor ul.editor-toolbar-tools li
+		{
+			list-style: none;
+			float: left;
+			display: block;
+			margin: 0 !important;
+			padding: 0 !important;
+		}
+
+		.glow170-editor .editor-toolbar-button
+		{
+			display: block;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+
+		.glow170-editor .editor-toolbar-button a { outline: none; text-decoration: none; }
+		.glow170-editor .editor-toolbar-button img { border: none; }
+
+		/* with images */
+		.glow170-editor .editor-toolbar-icon
+		{
+			display: block;
+			width: 26px;
+			height: 24px;
+		}
+
+		.glow170-editor .editor-toolbar-icon span
+		{
+			display: block;
+			height: 1px;
+			overflow: hidden;
+			width: 1px;
+		}
+
+		.glow170-editor .editor-toolbar-icon span { display: block; height: 1px; overflow: hidden; width: 1px; }
+
+		.glow170-editor .editor-toolbar-item .bold-button { background-image: url(images/editor/button-bold.png); }
+		.glow170-editor .editor-toolbar-item .italics-button { background-image: url(images/editor/button-italics.png); }
+		.glow170-editor .editor-toolbar-item .strike-button { background-image: url(images/editor/button-strike.png); }
+		.glow170-editor .editor-toolbar-item .blockquote-button { background-image: url(images/editor/button-blockquote.png); }
+		.glow170-editor .editor-toolbar-item .unorderedlist-button { background-image: url(images/editor/button-unorderedlist.png); }
+		.glow170-editor .editor-toolbar-item .orderedlist-button { background-image: url(images/editor/button-orderedlist.png); }
+
+		.glow170-editor .editor-toolbar-item .default  .editor-toolbar-icon { background-position: 0px 0px; }
+		.glow170-editor .editor-toolbar-item .disabled .editor-toolbar-icon { background-position: 0px -28px; }
+		.glow170-editor .editor-toolbar-item .active   .editor-toolbar-icon { background-position: 0px -85px; }
+		.glow170-editor .editor-toolbar-item .hover    .editor-toolbar-icon { background-position: 0px -56px; }
+
+		/* DROPDOWN */
+		
+		.glow170-editor .editor-toolbar-dropdown {
+			display: block;
+			width: 84px;
+			margin: 0 3px 0 3px;
+		}
+		
+		.glow170-editor .editor-toolbar-dropdown a {
+			color: black;
+			text-decoration: none;
+			font: 0.75em arial;
+		}
+		.glow170-editor .editor-toolbar-dropdown span span {
+			display: block;
+			padding: 1px 16px 1px 4px;
+			border: 1px solid #ccc;
+			height: 16px;
+			line-height: 16px;
+			margin: 3px 0 0 2px;
+			background: #fff url(images/editor/menuarrow.png) no-repeat right 8px;
+			
+			overflow: hidden;
+		}
+		.glow170-editor .editor-toolbar-dropdown .disabled span {
+			background: #aaa url(images/editor/menuarrow.png) no-repeat right -10px;
+		}
+		.glow170-editor .editor-toolbar-dropdown .hover span {
+			background: #fff url(images/editor/menuarrow.png) no-repeat right 8px;
+		}
+		.glow170-editor .editor-toolbar-dropdown .active span span {
+			border: 1px solid #aaa;
+		}
+		.glow170-editor .editor-toolbar-dropdown .active span {
+			background: #ccc url(images/editor/menuarrow.png) no-repeat right 8px;
+		}
+
+		.glow170-overlay.overlayMenu {
+			background: #ccc; border: 1px solid #b1b1b1;
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: medium;
+		}
+		
+		.glow170-overlay.overlayMenu ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		
+		.glow170-overlay.overlayMenu ul li {
+			padding: 2px 4px 2px 4px;
+			outline: none;
+		}
+		
+		.glow170-overlay.overlayMenu li.highlighted { background: #999; cursor: pointer; }
+		.glow170-overlay.overlayMenu .heading1 { font-size: 1.2em; }
+		.glow170-overlay.overlayMenu .heading2 { font-size: 1.1em; }
+		.glow170-overlay.overlayMenu .heading3 { font-size: 1.0em; }
+		.glow170-overlay.overlayMenu .normal   { font-size: 0.9em; }
+		
+		/* DROPDOWN DARK */
+		
+		.glow170-editor .editor-dark .editor-toolbar-dropdown span span {
+			border: 1px solid #666;
+			background: transparent url(images/editor/menuarrow.png) no-repeat scroll right -12px;
+			color: #fff;
+		}
+		
+		.glow170-editor .editor-dark .editor-toolbar-dropdown .hover span span {
+			border: 1px solid #ccc;
+		}
+		
+		.glow170-editor .editor-toolbar-dropdown .hover span span {
+			border: 1px solid #999;
+		}
+
+		.glow170-overlay.overlayMenu-dark {
+			background: #333; border: 1px solid #ccc;
+			color: #fff;
+		}
+		.glow170-overlay.overlayMenu-dark ul li.highlighted { background: #000; }
+
+		.glow170-editor .glow170-hidden { position: absolute; left: -2500px; width: 1px; }
+
+		/* without images */
+		.glow170-basic .glow170-editor .editor-toolbar-icon span { border: none; height: auto; overflow: hidden; width: auto; }
+		.glow170-basic .glow170-editor .editor-toolbar-item .hover span span { border: 1px solid #000; }
+
+		.glow170-editor iframe { border: 0; margin: 0; padding: 0; width: 100%; }
+
+		/* dark theme */
+		.glow170-editor .editor-dark .editor-toolbar { background: #333; color: #fff; }
+		.glow170-editor .editor-dark .editor-toolbar-item .bold-button { background-image: url(images/editor/dark-button-bold.png); }
+		.glow170-editor .editor-dark .editor-toolbar-item .italics-button { background-image: url(images/editor/dark-button-italics.png); }
+		.glow170-editor .editor-dark .editor-toolbar-item .strike-button { background-image: url(images/editor/dark-button-strike.png); }
+		.glow170-editor .editor-dark .editor-toolbar-item .blockquote-button { background-image: url(images/editor/dark-button-blockquote.png); }
+		.glow170-editor .editor-dark .editor-toolbar-item .blockquote-button { background-image: url(images/editor/dark-button-blockquote.png); }
+		.glow170-editor .editor-dark .editor-toolbar-item .unorderedlist-button { background-image: url(images/editor/dark-button-unorderedlist.png); }
+		.glow170-editor .editor-dark .editor-toolbar-item .orderedlist-button { background-image: url(images/editor/dark-button-orderedlist.png); }
+
+/* END EDITOR */
