@@ -162,6 +162,10 @@ footer {
 	-moz-border-radius-bottomleft: 10px;
 }
 
+footer p {
+	margin:0;
+}
+
 .curved, nav > ul > li a, nav > ul > li span, .error, .success, .box, .utils a {
 	-moz-border-radius-bottomleft:5px;
 	-moz-border-radius-topright:5px;
