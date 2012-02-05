@@ -24,8 +24,8 @@
  */
 (window.gloader || glow).module({
 	name: "glow.widgets",
-	library: ["glow", "1.7.0"],
-	depends: [["glow", "1.7.0", 'glow.dom', 'glow.events']],
+	library: ["glow", "1.7.7"],
+	depends: [["glow", "1.7.7", 'glow.dom', 'glow.events']],
 	builder: function(glow) {
 		var doc,
 			docBody,
@@ -36,12 +36,12 @@
 			docBody = doc.body;
 			
 			//check if css or images are disabled, add class name "glow-basic" to body if they aren't
-			var testDiv = glow.dom.create('<div class="glow170-cssTest" style="height:0;position:absolute;visibility:hidden;top:-20px;display:block"></div>').appendTo(docBody);
+			var testDiv = glow.dom.create('<div class="glow177-cssTest" style="height:0;position:absolute;visibility:hidden;top:-20px;display:block"></div>').appendTo(docBody);
 			
 			// not testing for height as that break in some browsers' 'zoom' implementations
 			if (testDiv.css("visibility") != 'hidden') {
 				//css disabled
-				docBody.className += " glow170-basic";
+				docBody.className += " glow177-basic";
 			} else {
 				// block any further ready calls until our widgets CSS has loaded
 				glow._addReadyBlock("glow_widgetsCSS");
@@ -56,17 +56,17 @@
 					glow._removeReadyBlock("glow_widgetsCSS");
 					
 					if (testDiv.css("background-image").indexOf("ctr.png") == -1) {
-						docBody.className += " glow170-basic";
+						docBody.className += " glow177-basic";
 					}
 				})();
 			}
 			
 			//add some IE class names to the body to help widget styling
-			env.ie && (docBody.className += " glow170-ie");
+			env.ie && (docBody.className += " glow177-ie");
 			//note: we apply the class "glow-ielt7" for IE7 if it's in quirks mode
-			(env.ie < 7 || !env.standardsMode) && (docBody.className += " glow170-ielt7");
+			(env.ie < 7 || !env.standardsMode) && (docBody.className += " glow177-ielt7");
 			//some rounding issues in firefox when using opacity, so need to have a workaround
-			env.gecko && (docBody.className += " glow170-gecko");
+			env.gecko && (docBody.className += " glow177-gecko");
 		});
 		
 		
@@ -89,9 +89,9 @@
 });
 (window.gloader || glow).module({
 	name: "glow.widgets.Mask",
-	library: ["glow", "1.7.0"],
+	library: ["glow", "1.7.7"],
 	depends: [[
-		"glow", "1.7.0",
+		"glow", "1.7.7",
 		'glow.dom',
 		'glow.events',
 		'glow.widgets'
@@ -324,9 +324,9 @@
 });
 (window.gloader || glow).module({
 	name: "glow.widgets.Overlay",
-	library: ["glow", "1.7.0"],
+	library: ["glow", "1.7.7"],
 	depends: [[
-		"glow", "1.7.0",
+		"glow", "1.7.7",
 		'glow.dom',
 		'glow.events',
 		'glow.anim',
@@ -345,7 +345,7 @@
 			  includes focus hook for the user / other widgets to assign focus to. Tried assigning focus to whole container
 			  but that selected all the text in opera 9.5
 			*/
-			overlayHtml = '<div class="glow170-overlay glowNoMask"><div class="overlay-focalPoint" tabindex="-1"></div></div>',
+			overlayHtml = '<div class="glow177-overlay glowNoMask"><div class="overlay-focalPoint" tabindex="-1"></div></div>',
 			overlayCount = 0, //number of overlays on the page, this is used to generate unique IDs
 			//this iframe code is duplicated in mask... shall we sort that out?
 			// javascript:false stops IE complaining over SSL
@@ -696,7 +696,7 @@
 				},
 				hideWindowedFlash: true,
 				focusOnShow: false,
-				id: "glow170Overlay" + (++overlayCount),
+				id: "glow177Overlay" + (++overlayCount),
 				closeOnEsc: false
 			}, opts);
 			
@@ -1058,7 +1058,7 @@
 				that.container.attr("aria-hidden", "true");
 				//move the focus if applicable
 				if (returnTo[0]) {
-					returnNodeName = returnTo[0].nodeName;
+					returnNodeName = returnTo[0].nodeName.toLowerCase();
 
 					//give the element a tab index if it needs one
 					if (returnTo[0].tabindex == undefined ||
@@ -1143,9 +1143,9 @@
 });
 (window.gloader || glow).module({
 	name: "glow.widgets.Panel",
-	library: ["glow", "1.7.0"],
+	library: ["glow", "1.7.7"],
 	depends: [[
-		"glow", "1.7.0",
+		"glow", "1.7.7",
 		'glow.dom',
 		'glow.events',
 		'glow.widgets.Overlay',
@@ -1187,7 +1187,7 @@
 						len = sheets.length,
 						sheet;
 						for (; i < len; i++) {
-							if (sheets[i].href.indexOf("widgets/widgets") != -1) {
+							if (sheets[i].href && sheets[i].href.indexOf("widgets/widgets") != -1) {
 								return sheets[i];
 							}
 							else {
@@ -1200,7 +1200,7 @@
 					}(document.styleSheets),
 
 					_ieCssRule = function(theme, className, image) {
-						return ".glow170-ie .glow170-overlay" + cssPngThemes[theme].className + " ." +
+						return ".glow177-ie .glow177-overlay" + cssPngThemes[theme].className + " ." +
 								className + " {background:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
 								iePngRoot + "/images/" + cssPngThemes[theme].path + "/" + image + ".png', sizingMethod='crop');}";
 					},
@@ -1268,7 +1268,7 @@
 		*/
 		defaultTemplate = function() {
 			var r = [], rLen = 0;
-			r[rLen++] = '<div class="glow170-panel">';
+			r[rLen++] = '<div class="glow177-panel">';
 				r[rLen++] = '<div class="defaultSkin">';
 					r[rLen++] = generateDivString(false, "infoPanel-pointerT", "infoPanel-pointerL", "infoPanel-pointerR");
 					r[rLen++] = '<div class="pc">';
@@ -1372,8 +1372,8 @@
 			if (!customTemplate) {
 				fullContent.addClass("panel-" + opts.theme);
 				//preload the images of the theme
-				if (!themesPreloaded[opts.theme] && docBody.className.indexOf("glow170-basic") == -1) {
-					fullContentClone = fullContent.clone().addClass("glow170-panel-preload").appendTo(docBody);
+				if (!themesPreloaded[opts.theme] && docBody.className.indexOf("glow177-basic") == -1) {
+					fullContentClone = fullContent.clone().addClass("glow177-panel-preload").appendTo(docBody);
 					themesPreloaded[opts.theme] = true;
 				}
 			}
@@ -1451,9 +1451,9 @@
 });
 (window.gloader || glow).module({
 	name: "glow.widgets.Sortable",
-	library: ["glow", "1.7.0"],
+	library: ["glow", "1.7.7"],
 	depends: [[
-		"glow", "1.7.0",
+		"glow", "1.7.7",
 		'glow.dom',
 		'glow.events',
 		'glow.dragdrop',
@@ -1608,9 +1608,14 @@
 		function handleDrop (e) {
 			var draggable = e.attachedTo,
 				el = draggable.element,
-				target = draggable.activeTarget;
-				
-		    this._previous = el.prev();
+				target = draggable.activeTarget,
+				previous = el.prev();
+
+			if ( previous.hasClass(this._opts.dropIndicatorClass) ) {
+				previous = previous.prev();
+			}
+		    this._previous = previous;
+
 			this._parent = el.parent();
 			if (target)	target.moveToPosition(draggable);
 	    }
@@ -1628,6 +1633,7 @@
 		function handleAfterDrop (e) {
 			var draggable = e.attachedTo,
 				el = draggable.element;
+
 			if (! el.prev().eq(this._previous || []) || ! el.parent().eq(this._parent)) {
 				fire(this, "sort");
 			}
@@ -1681,9 +1687,9 @@
 });
 (window.gloader || glow).module({
 	name: "glow.widgets.InfoPanel",
-	library: ["glow", "1.7.0"],
+	library: ["glow", "1.7.7"],
 	depends: [[
-		"glow", "1.7.0",
+		"glow", "1.7.7",
 		'glow.dom',
 		'glow.events',
 		'glow.widgets.Panel'
@@ -1696,7 +1702,7 @@
 			lang = glow.lang,
 			env = glow.env,
 			win,
-			positionRegex = /glow170\-infoPanel\-point[TRBL]/,
+			positionRegex = /glow177\-infoPanel\-point[TRBL]/,
 			offsetInContextDefaults = {
 				T: {x:"50%", y:"100%"},
 				R: {x:0, y:"50%"},
@@ -1832,10 +1838,10 @@
 			opts.context && opts.context.attr("aria-describedby", this.container[0].id);
 
 			if (!customTemplate) {
-				this.content.addClass("glow170-infoPanel");
+				this.content.addClass("glow177-infoPanel");
 			}
 
-			this.content.addClass("glow170-infoPanel-point" + (opts.pointerPosition || "t").slice(0,1).toUpperCase());
+			this.content.addClass("glow177-infoPanel-point" + (opts.pointerPosition || "t").slice(0,1).toUpperCase());
 		}
 		lang.extend(InfoPanel, widgets.Panel);
 
@@ -1896,7 +1902,7 @@
 					pointerPosition = calculateBestPointerSide(contextOffset, contextSize);
 					if (lastPointerPosition != pointerPosition) {
 						lastPointerPosition = pointerPosition;
-						contentNode.className = contentNode.className.replace(positionRegex, "glow170-infoPanel-point" + pointerPosition);
+						contentNode.className = contentNode.className.replace(positionRegex, "glow177-infoPanel-point" + pointerPosition);
 						pointerElm = container.get(".infoPanel-pointer" + pointerPosition);
 					}
 				} else {
@@ -1973,9 +1979,9 @@
 (window.gloader || glow).module({
 	// add the name of your new module
 	name: "glow.widgets.Slider",
-	library: ["glow", "1.7.0"],
+	library: ["glow", "1.7.7"],
 	depends: [[
-		"glow", "1.7.0",
+		"glow", "1.7.7",
 		// add the names of modules this modules depends on here, eg:
 		"glow.dom",
 		"glow.events",
@@ -2028,8 +2034,8 @@
 			],
 			/*
 			 HTML for the slider 
-			 This still needs to be wrapped in <div class="glow170-slider"> or
-			 <div class="glow170-vSlider"> before it's created
+			 This still needs to be wrapped in <div class="glow177-slider"> or
+			 <div class="glow177-vSlider"> before it's created
 			*/
 			SLIDER_TEMPLATE = '' +
 				'<div class="slider-theme">'+
@@ -2151,7 +2157,7 @@
 					i = opts.min;
 				
 				// create element
-				this.element = element = glow.dom.create('<div role="presentation" class="glow170-' + vocab.containerClassNamePart + '"><div class="ruler-spacer"></div><div class="ruler-labels"></div></div>');
+				this.element = element = glow.dom.create('<div role="presentation" class="glow177-' + vocab.containerClassNamePart + '"><div class="ruler-spacer"></div><div class="ruler-labels"></div></div>');
 				labelsElm = element.get('div.ruler-labels');
 				
 				// add custom ID / Class names
@@ -2921,7 +2927,7 @@
 				mySlider.element.offset();
 			*/
 			// add in wrapping element
-			this.element = element = glow.dom.create('<div class="glow170-' + vocab.containerClassNamePart + '" tabindex="0" role="slider" aria-disabled="false">' + SLIDER_TEMPLATE + '</div>');
+			this.element = element = glow.dom.create('<div class="glow177-' + vocab.containerClassNamePart + '" tabindex="0" role="slider" aria-disabled="false">' + SLIDER_TEMPLATE + '</div>');
 			this._trackElm = element.get("div.slider-track");
 			this._trackOnElm = element.get("div.slider-trackOn");
 			this._trackOffElm = element.get("div.slider-trackOff");
@@ -3246,9 +3252,9 @@
 
 (window.gloader || glow).module({
 	name: 'glow.widgets.AutoSuggest',
-	library: ['glow', '1.7.0'],
+	library: ['glow', '1.7.7'],
 	depends: [[
-		'glow', '1.7.0',
+		'glow', '1.7.7',
 		'glow.dom',
 		'glow.events',
 		'glow.anim',
@@ -3443,7 +3449,7 @@
 		function getParentListItem(that, node) { /*debug*///console.log("getParentListItem("+node+")");
 			var listItem = node;
 			while (listItem.parentNode && listItem.parentNode.parentNode) {
-				if ($(listItem.parentNode.parentNode).hasClass('glow170-autoSuggest')) break;
+				if ($(listItem.parentNode.parentNode).hasClass('glow177-autoSuggest')) break;
 				listItem = listItem.parentNode;
 			}
 			return (listItem.nodeName.toLowerCase() == 'li')? listItem : null;
@@ -3676,10 +3682,12 @@
 						}
 						break;
 					case 'ESC':
-						// return to the value originally entered by the user
-						that.inputElement.val(that._original);
-						that._value = that._original;
-						valueChanged(that, true);
+    					// If set then return to the value originally entered by the user
+						if (that._original) {
+							that.inputElement.val(that._original);
+							that._value = that._original;
+							valueChanged(that, true);
+						}
 						that.hide();
 						return false;
 					case 'DEL':
@@ -3856,6 +3864,12 @@
 				If false, a random number will be added to the URL to ensure the
 				results do not come from the browser's cache.
 			@param {Boolean} [opts.selectCompletedText=true] Set to false to prevent the widget from highlighting the completed text in the input element by selecting it.
+			@param {String} [opts.id] ID for the AutoSuggest's container element.
+				This (or className) should be used if you're going to restyle the output,
+				to ensure your restyling only changes the autosuggests you want to restyle.
+			@param {String} [opts.className] Class names for the AutoSuggest's container element.
+				This (or id) should be used if you're going to restyle the output,
+				to ensure your restyling only changes the autosuggests you want to restyle.
 			
 			@param {Function} [opts.onItemSelect] Your own handler for the itemSelect event.
 			@param {Function} [opts.onDataLoad] Your own handler for the dataLoad event.
@@ -3950,10 +3964,12 @@
 			bindTo(this, inputElement);
 						
 			this.overlay = new glow.widgets.Overlay(
-				glow.dom.create('<div class="glow170-autoSuggest"><ul></ul></div>'),
+				glow.dom.create('<div class="glow177-autoSuggest"><ul></ul></div>'),
 				{
 					autoPosition: false,
-					anim: (this.opts.anim)? this.opts.anim : null
+					anim: (this.opts.anim)? this.opts.anim : null,
+					id: this.opts.id || '',
+					className: this.opts.className || ''
 				}
 			);
 		
@@ -3994,7 +4010,7 @@
 			}
 			
 			this.opts.selectCompletedText =
-				(opts.selectCompletedText === undefined)? true : opts.selectCompletedText;
+				(this.opts.selectCompletedText === undefined)? true : this.opts.selectCompletedText;
 		}
 
 /* public fields *************************************************************/
@@ -4038,7 +4054,7 @@
 			
 			if (this.opts.autoPosition === undefined) { this.opts.autoPosition = true; }
 			if (this.opts.height) {
-				var listContainer = $(this.overlay.container.get('.glow170-autoSuggest').get('ul')[0]);
+				var listContainer = $(this.overlay.container.get('.glow177-autoSuggest').get('ul')[0]);
 				listContainer.css('overflow-x', 'hidden');
 				listContainer.css('overflow-y', 'auto');
 				listContainer.height(this.opts.height);
@@ -4386,12 +4402,11 @@
 			return -1;
 		}
 	}
-});
-(window.gloader || glow).module({
+});(window.gloader || glow).module({
 	name: 'glow.widgets.AutoComplete',
-	library: ['glow', '1.7.0'],
+	library: ['glow', '1.7.7'],
 	depends: [[
-		'glow', '1.7.0',
+		'glow', '1.7.7',
 		'glow.widgets.AutoSuggest'
 	]],
 	
@@ -4461,9 +4476,9 @@
 });
 (window.gloader || glow).module({
 	name: "glow.widgets.Carousel",
-	library: ["glow", "1.7.0"],
+	library: ["glow", "1.7.7"],
 	depends: [[
-		"glow", "1.7.0",
+		"glow", "1.7.7",
 		"glow.dom",
 		"glow.events",
 		"glow.anim",
@@ -4575,7 +4590,8 @@
 				clicked.
 			
 			@param {glow.events.Event} event Event Object
-			@param {glow.dom.NodeList} event.item Represents the item clicked
+			@param {HTMLElement} event.item Represents the item clicked.
+				Conver this to a nodelist using {@link glow.dom.get}.
 			@param {Number} event.itemIndex Index of the item clicked
 			
 		*/
@@ -4643,7 +4659,7 @@
 			this.element =
 				dom.create("<div"
 					+ (this._opts.id? " id=\"" + this._opts.id + "\"" : "")
-					+ " class=\"" + (this._opts.vertical? "glow170-vCarousel" : "glow170-carousel")
+					+ " class=\"" + (this._opts.vertical? "glow177-vCarousel" : "glow177-carousel")
 					+ (this._opts.className? " " + this._opts.className : "")
 					+ "\"></div>"
 				);
@@ -4658,10 +4674,10 @@
 			
 			// add selector hooks
 			if (this._opts.vertical) {
-				this.element.addClass("glow170-vCarousel");
+				this.element.addClass("glow177-vCarousel");
 			}
 			else {
-				this.element.addClass("glow170-carousel");
+				this.element.addClass("glow177-carousel");
 			}
 			
 			// create the navigational buttons
@@ -5000,7 +5016,6 @@
 				}
 			}
 
-
 			// the number of pads needed differs if we're looping or not
 			if (this._opts.loop) {
 				// pad items to an even step, prevents carousel getting out of step
@@ -5020,6 +5035,17 @@
 			pad.removeAttr("id");
 			pad.addClass("carousel-added");
 			pad.addClass("carousel-pad");
+			
+			// in order to set visibility of text nodes to hidden they must be wrapped in an element
+			for (var i = pad[0].childNodes.length-1; i >= 0; i--) {
+				var padChild = pad[0].childNodes[i];
+				if (padChild.nodeType === 3) { // is it a text node?
+					var wrappedPadChild = document.createElement('span');
+					wrappedPadChild.innerHTML = padChild.nodeValue;
+					pad[0].replaceChild(wrappedPadChild, padChild);
+				}
+			}
+			
 			/*debug*///pad.html("PAD");
 			pad.children().css("visibility", "hidden"); // keep the same dimensions as the model, but don't display anything
 				
@@ -5636,9 +5662,9 @@
 	}
 });(window.gloader || glow).module({
 	name: 'glow.widgets.Editor',
-	library: ['glow', '1.7.0'],
+	library: ['glow', '1.7.7'],
 	depends: [[
-		'glow', '1.7.0',
+		'glow', '1.7.7',
 		'glow.dom',
 		'glow.events',
 		'glow.widgets',
@@ -5740,7 +5766,7 @@
 				opts
 			);
 			// interpolate context
-			this.element = glow.dom.create('<div class="glow170-editor"><p class="glow170-hidden">{ENTER_MESSAGE}, <a href="#endOfEditor' + endOfEditorCounter() + '" tabindex="0">{SKIP_LINK_TEXT}</a></p><div class="editor-' + (opts.theme || "light") + '"><div class="editor-state"></div></div><p id="endOfEditor' + endOfEditorCounter() + '" class="glow170-hidden endOfEditorCounter" tabindex="0">{LEAVE_MESSAGE}</p></div>', {interpolate : editorLocaleModule});
+			this.element = glow.dom.create('<div class="glow177-editor"><p class="glow177-hidden">{ENTER_MESSAGE}, <a href="#endOfEditor' + endOfEditorCounter() + '" tabindex="0">{SKIP_LINK_TEXT}</a></p><div class="editor-' + (opts.theme || "light") + '"><div class="editor-state"></div></div><p id="endOfEditor' + endOfEditorCounter() + '" class="glow177-hidden endOfEditorCounter" tabindex="0">{LEAVE_MESSAGE}</p></div>', {interpolate : editorLocaleModule});
 			this.textarea = textarea;
 			this.toolbar = new glow.widgets.Editor.Toolbar(this);
 			
@@ -6785,9 +6811,9 @@ Idler.prototype._stop = function() {
 			
 			// add menuItems onto overlayMenu HTML as <li>s
 			var z = 0;
-			for (menuItem in overlayMenu.menuItems) {
+			for (var i = 0, leni = overlayMenu.menuItems.length; i<leni; i++) {
 				// shortcut
-				menuItem = overlayMenu.menuItems[menuItem];
+				menuItem = overlayMenu.menuItems[i];
 				// create and add the html to the overlayMenuContents
 				overlayMenuContents.append(glow.lang.interpolate(menuItem.template, {title: menuItem.title}));
 				// if menuItem.selected == true then set overlayMenu.selected to the index value
@@ -6808,8 +6834,9 @@ Idler.prototype._stop = function() {
 			
 			// pass in a tag, and if the tag matches one of the tags in the menuItems return the matching menuItem's title
 			overlayMenu.getTitleFromTag = function(tag) {
-				for (menuItem in overlayMenu.menuItems) {
-					menuItem = overlayMenu.menuItems[menuItem];
+				var menuItem;
+				for (var i = 0, leni = overlayMenu.menuItems.length; i<leni; i++) {
+					menuItem = overlayMenu.menuItems[i];
 					if (menuItem.tag == tag) {
 						return menuItem.title;
 					}
@@ -7741,9 +7768,9 @@ Idler.prototype._stop = function() {
 
 (window.gloader || glow).module({
 	name: "glow.widgets.Timetable",
-	library: ["glow", "1.7.0"],
+	library: ["glow", "1.7.7"],
 	depends: [[
-		"glow", "1.7.0",
+		"glow", "1.7.7",
 		'glow.dom',
 		'glow.events',
 		'glow.widgets',
@@ -7766,7 +7793,7 @@ Idler.prototype._stop = function() {
 				{
 					length: "width",
 					breadth: "height",
-					rootClass: "glow170-Timetable",
+					rootClass: "glow177-Timetable",
 					dragAxis: "x",
 					pos: "left",
 					posOpposite: "right",
@@ -7777,7 +7804,7 @@ Idler.prototype._stop = function() {
 				{
 					length: "height",
 					breadth: "width",
-					rootClass: "glow170-vTimetable",
+					rootClass: "glow177-vTimetable",
 					dragAxis: "y",
 					pos: "top",
 					posOpposite: "bottom",
@@ -9009,7 +9036,7 @@ Idler.prototype._stop = function() {
 			},
 
 			/**
-			@name glow.widgets.Timetable.Item#getHeader
+			@name glow.widgets.Timetable.Track#getHeader
 			@function
 			@description Gets the actual content of if the Track header (if any) for the Timetable to display
 			@returns glow.dom.NodeList
@@ -9019,7 +9046,7 @@ Idler.prototype._stop = function() {
 			},
 
 			/**
-			@name glow.widgets.Timetable.Item#getFooter
+			@name glow.widgets.Timetable.Track#getFooter
 			@function
 			@description Gets the actual content of if the Track footer (if any) for the Timetable to display
 			@returns glow.dom.NodeList

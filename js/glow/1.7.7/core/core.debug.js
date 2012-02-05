@@ -16,7 +16,7 @@
 /**
 @name glow
 @namespace
-@version 1.7.0 (2008-09-22)
+@version 1.7.7 (2008-09-22)
 @description The glow namespace and core library.
 
     Includes common methods for running scripts onDomReady and user agent sniffing.
@@ -38,7 +38,7 @@
 		*/
 		ua = navigator.userAgent.toLowerCase(),
 		//glow version
-		version = "1.7.0",
+		version = "1.7.7",
 		// number of blockers blocking (when it's zero, we're ready)
 		blockersActive = 0,
 		/*
@@ -188,12 +188,12 @@
 				Eg. "glow.dom" or "glow.widgets.Panel"
 
 			@param {String[]} meta.library Information about Glow.
-				This must be ["glow", "1.7.0"]. 1.7.0 should be
+				This must be ["glow", "1.7.7"]. 1.7.7 should be
 				the version number of glow expected.
 
 			@param {String[]} meta.depends The module's dependencies.
-				This must start ["glow", "1.7.0"], followed by modules
-				such as "glow.dom". 1.7.0 should be the version number
+				This must start ["glow", "1.7.7"], followed by modules
+				such as "glow.dom". 1.7.7 should be the version number
 				of glow expected.
 
 			@param {Function} meta.builder The module's implementation.
@@ -301,12 +301,11 @@
 				glow._removeReadyBlock("widgetsCss");
 			*/
 			_addReadyBlock: function(name) {
-				if (name in glow._readyBlockers) {
-					throw new Error("Blocker '" + name +"' already exists");
+				if ( !glow._readyBlockers[name] ) {
+					glow._readyBlockers[name] = true;
+					glow.isReady = false;
+					blockersActive++;
 				}
-				glow._readyBlockers[name] = true;
-				glow.isReady = false;
-				blockersActive++;
 				return glow;
 			},
 			
@@ -872,7 +871,7 @@
 	if (window.gloader) {
 		gloader.library({
 			name: "glow",
-			version: "1.7.0",
+			version: "1.7.7",
 			builder: function () {
 				return glow;
 			}
@@ -901,8 +900,8 @@
 */
 (window.gloader || glow).module({
 	name: "glow.i18n",
-	library: ["glow", "1.7.0"],
-	depends: [["glow", "1.7.0"]],
+	library: ["glow", "1.7.7"],
+	depends: [["glow", "1.7.7"]],
 	builder: function(glow) {
 		var self;
 		
@@ -1588,7 +1587,7 @@
 */
 (window.gloader || glow).module({
 	name: "glow.dom",
-	library: ["glow", "1.7.0"],
+	library: ["glow", "1.7.7"],
 	depends: [],
 	builder: function(glow) {
 		//private
@@ -2789,7 +2788,7 @@
 
 				If nodespec is a NodeList, then the its first node will be used.
 
-			@returns {glow.dom.NodeList}
+			@returns {Boolean} True if all NodeList elements are within nodespec
 
 			@example
 				var myNodeList = glow.dom.get("input");
@@ -4006,13 +4005,17 @@
 				// get a copy of all anchor elements with 
 				var myAnchors = glow.dom.get("a").clone(true);
 			*/
-			clone: function (cloneListeners) {
+			clone: function (cloneListeners) {				
 				var ret = [],
 					i = this.length,
 					allCloneElms,
 					allBaseElms
 					eventIdProp = '__eventId' + glow.UID;
-
+				
+				if (i === 0) {
+					return new r.NodeList();
+				}
+				
 				while (i--) {
 					ret[i] = this[i].cloneNode(true);
 				}
@@ -4083,7 +4086,7 @@
 
 				if (newHtml !== undefined) {
 					// not setting innerHTML, doesn't work in IE for elements like <table>
-					return this.empty().append(newHtml);
+					return this.empty().append( newHtml.toString() );
 				}
 				return this[0] ? this[0].innerHTML : "";
 			},
@@ -5339,8 +5342,8 @@
 */
 (window.gloader || glow).module({
 	name: "glow.events",
-	library: ["glow", "1.7.0"],
-	depends: [["glow", "1.7.0", 'glow.dom']],
+	library: ["glow", "1.7.7"],
+	depends: [["glow", "1.7.7", 'glow.dom']],
 	builder: function(glow) {
 		
 		var $ = glow.dom.get;
@@ -5703,7 +5706,7 @@
 			<dl>
 				<dt>mouseenter</dt>
 				<dd>Fires when the mouse enters this element specifically, does not bubble</dd>
-				<dt>mouseleave/dt>
+				<dt>mouseleave</dt>
 				<dd>Fires when the mouse leaves this element specifically, does not bubble</dd>
 			</dl>
 		
@@ -5843,10 +5846,13 @@
 		/**
 		@name glow.events.removeListener 
 		@function
-		@description Removes a listener created with addListener
+		@description Removes listener(s) created with addListener
 
-		@param {Number} ident An identifier returned from {@link glow.events.addListener}.
-	
+		@param {Number|Number[]} ident An identifier or array of identifiers.
+			Idenftifiers are returned from {@link glow.events.addListener}. 
+
+			If array of identifiers is provided, each listener specified will be removed.
+
 		@returns {Boolean}
 		
 		@example
@@ -6426,7 +6432,8 @@
 		glow.events = r;
 		glow.events.listenersByObjId = listenersByObjId;
 	}
-});/**
+});
+/**
 @name glow.data
 @namespace
 @description Serialising and de-serialising data
@@ -6434,8 +6441,8 @@
 */
 (window.gloader || glow).module({
 	name: "glow.data",
-	library: ["glow", "1.7.0"],
-	depends: [["glow", "1.7.0", "glow.dom"]],
+	library: ["glow", "1.7.7"],
+	depends: [["glow", "1.7.7", "glow.dom"]],
 	builder: function(glow) {
 		//private
 
@@ -6836,8 +6843,8 @@
 */
 (window.gloader || glow).module({
 	name: "glow.net",
-	library: ["glow", "1.7.0"],
-	depends: [["glow", "1.7.0", "glow.data", "glow.events"]],
+	library: ["glow", "1.7.7"],
+	depends: [["glow", "1.7.7", "glow.data", "glow.events"]],
 	builder: function(glow) {
 		//private
 
@@ -6869,7 +6876,8 @@
 			globalObjectName = "_" + glow.UID + "loadScriptCbs",
 			$ = glow.dom.get,
 			events = glow.events,
-			emptyFunc = function(){};
+			emptyFunc = function(){},
+			idCount = 1;
 
 		/**
 		 * @name glow.net.xmlHTTPRequest
@@ -6896,20 +6904,23 @@
 		 * @returns Object
 		 */
 		function populateOptions(opts) {
-			return glow.lang.apply(
-				{
-					onLoad: emptyFunc,
-					onError: emptyFunc,
-					onAbort: emptyFunc,
-					headers: {},
-					async: true,
-					useCache: false,
-					data: null,
-					defer: false,
-					forceXml: false
-				},
-				opts || {}
-			);
+			var newOpts = glow.lang.apply({
+				onLoad: emptyFunc,
+				onError: emptyFunc,
+				onAbort: emptyFunc,
+				headers: {},
+				async: true,
+				useCache: false,
+				data: null,
+				defer: false,
+				forceXml: false
+			}, opts || {} );
+			
+			// add requested with header if one hasn't been added
+			if ( !('X-Requested-With' in newOpts.headers) ) {
+				newOpts.headers['X-Requested-With'] = 'XMLHttpRequest';
+			}
+			return newOpts;
 		}
 
 		/*
@@ -6918,7 +6929,7 @@
 		*/
 
 		function noCacheUrl(url) {
-			return [url, (/\?/.test(url) ? "&" : "?"), "a", new Date().getTime(), parseInt(Math.random()*100000)].join("");
+			return url + (url.indexOf('?') === -1 ? '?' : '&') + 'cachebuster=' + new Date().valueOf();
 		}
 
 		/*
@@ -7067,21 +7078,19 @@
 		@param {Object} opts
 			Same options as {@link glow.net.get}
 
-		@returns {Number|glow.net.Response}
-			An integer identifying the async request, or the response object for sync requests
+		@returns {glow.net.Request|glow.net.Response}
+			A response object for non-defered sync requests, otherwise a
+			request object is returned
 
 		@example
-			var postRef = glow.net.post("myFile.html",
-				{key:"value", otherkey:["value1", "value2"]},
-				{
-					onLoad: function(response) {
-						alert("Got file:\n\n" + response.text());
-					},
-					onError: function(response) {
-						alert("Error getting file: " + response.statusText());
-					}
+			glow.net.post("myFile.html", {key:"value", otherkey:["value1", "value2"]}, {
+				onLoad: function(response) {
+					alert("Got file:\n\n" + response.text());
+				},
+				onError: function(response) {
+					alert("Error getting file: " + response.statusText());
 				}
-			);
+			});
 		*/
 		r.post = function(url, data, o) {
 			o = populateOptions(o);
@@ -7090,6 +7099,115 @@
 				o.headers["Content-Type"] = STR.POST_DEFAULT_CONTENT_TYPE;
 			}
 			return makeXhrRequest('POST', url, o);
+		};
+
+		/**
+		@name glow.net.send
+		@function
+		@description Makes a custom HTTP request to a given url
+			Not all HTTP verbs work cross-browser. Use {@link glow.net.get get},
+			{@link glow.net.post post}, {@link glow.net.put put} or
+			{@link glow.net.del del} for 'safe' methods.
+
+		@param {String} method
+			The HTTP method to use for the request. Methods are case sensitive
+			in some browsers.
+		@param {String} url
+			Url to make the request to. This can be a relative path. You cannot make requests
+			for files on other domains, to do that you must put your data in a javascript
+			file and use {@link glow.net.loadScript} to fetch it.
+		@param {Object|String} [data]
+			Data to post, either as a JSON-style object or a urlEncoded string
+		@param {Object} opts
+			Same options as {@link glow.net.get}
+
+		@returns {glow.net.Request|glow.net.Response}
+			A response object for non-defered sync requests, otherwise a
+			request object is returned
+
+		@example
+			glow.net.send('HEAD', 'myFile.html', null, {
+				onLoad: function(response) {
+					// ...
+				}
+			});
+		*/
+		r.send = function(method, url, data, o) {
+			// Ensure that an empty body does not cause a 411 error.
+			data = data || '';
+
+			o = populateOptions(o);
+			o.data = data;
+
+			return makeXhrRequest(method, url, o);
+		};
+
+		/**
+		@name glow.net.put
+		@function
+		@description Makes an HTTP PUT request to a given url
+
+		@param {String} url
+			Url to make the request to. This can be a relative path. You cannot make requests
+			for files on other domains, to do that you must put your data in a javascript
+			file and use {@link glow.net.loadScript} to fetch it.
+		@param {Object|String} data
+			Data to put, either as a JSON-style object or a urlEncoded string
+		@param {Object} opts
+			Same options as {@link glow.net.get}
+
+		@returns {glow.net.Request|glow.net.Response}
+			A response object for non-defered sync requests, otherwise a
+			request object is returned
+
+		@example
+			glow.net.put("myFile.html", {key:"value", otherkey:["value1", "value2"]}, {
+				onLoad: function(response) {
+					alert("Got file:\n\n" + response.text());
+				},
+				onError: function(response) {
+					alert("Error getting file: " + response.statusText());
+				}
+			});
+		*/
+		r.put = function(url, data, o) {
+			o = populateOptions(o);
+			o.data = data;
+			if (!o.headers["Content-Type"]) {
+				o.headers["Content-Type"] = STR.POST_DEFAULT_CONTENT_TYPE;
+			}
+			return makeXhrRequest('PUT', url, o);
+		};
+
+		/**
+		@name glow.net.del
+		@function
+		@description Makes an HTTP DELETE request to a given url
+
+		@param {String} url
+			Url to make the request to. This can be a relative path. You cannot make requests
+			for files on other domains, to do that you must put your data in a javascript
+			file and use {@link glow.net.loadScript} to fetch it.
+		@param {Object} opts
+			Same options as {@link glow.net.get}
+
+		@returns {glow.net.Request|glow.net.Response}
+			A response object for non-defered sync requests, otherwise a
+			request object is returned
+
+		@example
+			glow.net.del("myFile.html", {
+				onLoad: function(response) {
+					alert("Got file:\n\n" + response.text());
+				},
+				onError: function(response) {
+					alert("Error getting file: " + response.statusText());
+				}
+			});
+		*/
+		r.del = function(url, o) {
+			o = populateOptions(o);
+			return makeXhrRequest('DELETE', url, o);
 		};
 
 		/**
@@ -7420,12 +7538,14 @@
 			 @returns this
 			*/
 			destroy: function() {
+				var that = this;
+				
 				if (this._callbackIndex !== undefined) {
-					// set timeout is used here to prevent a crash in IE7 (possibly other version) when the script is from the filesystem
+					// set timeout is used here to prevent a crash in IE7 (possibly other versions) when the script is from the filesystem
 					setTimeout(function() {
-						$( scriptElements[this._callbackIndex] ).destroy();
-						scriptElements[this._callbackIndex] = undefined;
-						delete scriptElements[this._callbackIndex];
+						$( scriptElements[that._callbackIndex] ).destroy();
+						scriptElements[that._callbackIndex] = undefined;
+						delete scriptElements[that._callbackIndex];
 					}, 0);
 				}
 				return this;
@@ -7495,7 +7615,7 @@
 
 		}
 		
-		/**
+		/* (hidden from jsdoc as it appeared in output docs)
 		@name glow.net-shouldParseAsXml
 		@function
 		@description Should the response be treated as xml? This function is used by IE only
@@ -7538,7 +7658,7 @@
 					|| ( this._request._forceXml && !this._request.nativeRequest.overrideMimeType && window.ActiveXObject )
 				) {
 					var doc = new ActiveXObject("Microsoft.XMLDOM");
-                    doc.loadXML( nativeResponse.responseText );
+					doc.loadXML( nativeResponse.responseText );
 					return doc;
 				}
 				else {
@@ -7595,9 +7715,317 @@
 			}
 		})
 
+		// Private (x-domain request)
+
+		/**
+		@name _XDomainRequest
+		@private
+		@class
+		@description A request made via a form submission in a hidden iframe, with the result being communicated
+					 via the name attribute of the iframe's window.
+
+		@param {String} url
+				the URL to post the data to.
+		@param {Object} data
+				the data to post. This should be keys with String values (or values that will be converted to
+				strings) or Array values where more than one value should be sent for a single key.
+		@param {Object} opts
+				an Object containing the same options as passed to glow.net.xDomainPost.
+		*/
+		var _XDomainRequest = function (url, data, isGet, opts) {
+			this.url  = url;
+			this.data = data;
+			this.isGet = isGet;
+			this.opts = opts;
+		};
+
+
+		_XDomainRequest.prototype = {
+			/**
+			@name _XDomainRequest#_send
+			@private
+			@function
+			@description Send the request
+			*/
+			_send: function () {
+				this._addIframe();
+				this._addForm();
+				this._addTimeout();
+				this.onLoad = this._handleResponse;
+				this._submitForm();
+			},
+
+			/**
+			@name _XDomainRequest#_addIframe
+			@private
+			@function
+			@description Add a hidden iframe for posting the request
+			*/
+			_addIframe: function () {
+				this.iframe = glow.dom.create(
+					'<iframe style="visibility: hidden; position: absolute; height: 0;"></iframe>'
+				);
+				var iframe   = this.iframe[0],
+					request  = this,
+					callback = function () {
+						if (request.onLoad) request.onLoad();
+					};
+
+				if (iframe.attachEvent) {
+					iframe.attachEvent('onload', callback);
+				} else {
+					iframe.onload = callback;
+				}
+				$('body').append(this.iframe);
+			},
+		
+			/**
+			@name _XDomainRequest#_addForm
+			@private
+			@function
+			@description Add the form to the iframe for posting the request
+			*/
+			_addForm: function () {
+				var doc = this._window().document;
+
+				// IE needs an empty document to be written to written to the iframe
+				if (glow.env.ie) {
+					doc.open();
+					doc.write('<html><body></body></html>');
+					doc.close();
+				}
+
+				var form = this.form = doc.createElement('form');
+				form.setAttribute('action', this.url);
+				form.setAttribute('method', this.isGet ? 'GET' : 'POST');
+
+				var body = doc.getElementsByTagName('body')[0];
+				body.appendChild(form);
+				this._addFormData();
+			},
+
+			/**
+			@name _XDomainRequest#_addFormData
+			@private
+			@function
+			@description Add the data to the form
+			*/
+			_addFormData: function () {
+				for (var i in this.data) {
+					if (! this.data.hasOwnProperty(i)) continue;
+					if (this.data[i] instanceof Array) {
+						var l = this.data[i].length;
+						for (var j = 0; j < l; j++) {
+							this._addHiddenInput(i, this.data[i][j]);
+						 }
+					}
+					else {
+						this._addHiddenInput(i, this.data[i]);
+					}
+				}
+			},
+
+			/**
+			@name _XDomainRequest#_addHiddenInput
+			@private
+			@function
+			@description Add a hidden input to the form for a piece of data
+			*/
+			_addHiddenInput: function (name, value) {
+				var input = this._window().document.createElement('input');
+				input.type = 'hidden';
+				input.name = name;
+				input.value = value;
+				this.form.appendChild(input);
+			},
+
+			/**
+			@name _XDomainRequest#window
+			@private
+			@function
+			@description Get the window for the hidden iframe
+			*/
+			_window: function () {
+				var iframe = this.iframe[0];
+				if (iframe.contentWindow)
+					return iframe.contentWindow;
+				throw new Error('could not get contentWindow from iframe');
+
+				// this code was here to work around a browser quirk, but I don't know which for...
+				// I have tested in recent Safari, Chrome, Firefox, Opera and IE 6, 7, 8
+				// If the above error shows up, then this is the thing to try
+
+				// if (iframe.contentDocument && iframe.contentDocument.parentWindow)
+				//	return iframe.contentDocument.parentWindow;
+			},
+
+			/**
+			@name _XDomainRequest#_addTimeout
+			@private
+			@function
+			@description Add a timeout to cancel the request if it takes too long
+			*/
+			_addTimeout: function () {
+				var request = this;
+				this.timeout = setTimeout(function () {
+					var err;
+					if (request.opts.hasOwnProperty('onTimeout')) {
+						try {
+							request.opts.onTimeout();
+						}
+						catch (e) {
+							err = e;
+						}
+					}
+					request._cleanup();
+					if (err) throw new Error('error in xDomainPost onTimeout callback: ' + err);
+				}, (this.opts.timeout || 10) * 1000); /* 10 second default */
+			},
+
+			/**
+			@name _XDomainRequest#_handleResponse
+			@private
+			@function
+			@description Callback for load event in the hidden iframe
+			*/
+			_handleResponse: function () {
+				var err, href, win = this._window();
+				try {
+					href = win.location.href;
+				}
+				catch (e) {
+					err  = e;
+				}
+				if (href != 'about:blank' || err) {
+					clearTimeout(this.timeout);
+					this.onLoad = this._readHandler;
+					// this is just here for the tests, normally always want it to be in the same origin
+					if ('_fullBlankUrl' in this.opts) {
+						win.location = this.opts._fullBlankUrl;
+					}
+					else {
+						win.location = window.location.protocol + '//' + window.location.host + (this.opts.blankUrl || '/favicon.ico');
+					}
+				}
+			},
+
+			/**
+			@name _XDomainRequest#_readHandler
+			@private
+			@function
+			@description Callback for load event of blank page in same origin
+			*/
+			_readHandler: function () {
+				var err;
+				if (this.opts.hasOwnProperty('onLoad')) {
+					try {
+						this.opts.onLoad(this._window().name);
+					}
+					catch (e) {
+						err = e;
+					}
+				}
+				this._cleanup();
+				if (err)
+					throw new Error('error in xDomainPost onLoad callback: ' + err);
+			},
+
+			/**
+			@name _XDomainRequest#_cleanup
+			@private
+			@function
+			@description Removes the iframe and any event listeners
+			*/
+			_cleanup: function () {
+				this.iframe.remove();
+			},
+
+			/**
+			@name _XDomainRequest#_submitForm
+			@private
+			@function
+			@description Submit the form to make the post request
+			*/
+			_submitForm : function () {
+				var request = this;
+				// the set timeout is here to make the form submit in the context of the iframe
+				this._window().setTimeout(function () { request.form.submit() }, 0);
+			}
+		};
+
+		// public (x-domain request)
+
+		/**
+		@name glow.net.xDomainPost
+		@function
+		@description Makes a cross-domain POST request.
+					 A form is constructed in a hidden iframe to make the request.
+
+					 The URL that's requested should respond with a blank html page containing JavaScript
+					 that assigns the result data to window.name as a string, for example:
+
+					 &lt;script type="text/javascript">
+					 window.name = '{ "success": true }';
+					 &lt;/script>
+		
+		@param {String} url url to perform the request on
+				the URL to post the data to.
+		@param {Object} data
+				the data to post. This should be keys with String values (or values that will be converted to
+				strings) or Array values where more than one value should be sent for a single key.
+		@param {Object} opts
+				Zero or more of the following as properties of an object:
+				@param {Function} [opts.onLoad] callback called when the request completes
+						a callback that is called when the response to the post is recieved. The function is passed
+						a single parameter containing the value of window.name set by the response to the post.
+				@param {Number} [opts.timeout=10] request timeout
+						the request timeout in seconds (default 10 seconds)
+				@param {Function} [opts.onTimeout] callback called when request times out
+						a callback that is called when the requested url takes longer than the timeout to respond
+				@param {String} [opts.blankUrl='/favicon.ico'] url to load after main request
+						the path of a blank URL on the same domain as the caller (default '/favicon.ico')	   
+		*/
+		r.xDomainPost = function (url, data, opts) {
+			var request = new _XDomainRequest(url, data, false, opts);
+			request._send();
+		};
+
+		/**
+		@name glow.net.xDomainGet
+		@function
+		@description Makes a cross-domain GET request.
+					 A form is constructed in a hidden iframe to make the request.
+
+					 The URL that's requested should respond with a blank html page containing JavaScript
+					 that assigns the result data to window.name as a string, for example:
+
+					 &lt;script type="text/javascript">
+					 window.name = '{ "success": true }';
+					 &lt;/script>
+		
+		@param {String} url url to perform the request on
+				The address that the GET request should be sent to.
+		@param {Object} opts
+				Zero or more of the following as properties of an object:
+				@param {Function} [opts.onLoad] callback called when the request completes
+						a callback that is called when the response to the post is recieved. The function is passed
+						a single parameter containing the value of window.name set by the response to the post.
+				@param {Number} [opts.timeout=10] request timeout
+						the request timeout in seconds (default 10 seconds)
+				@param {Function} [opts.onTimeout] callback called when request times out
+						a callback that is called when the requested url takes longer than the timeout to respond
+				@param {String} [opts.blankUrl='/favicon.ico'] url to load after main request
+						the path of a blank URL on the same domain as the caller (default '/favicon.ico')	   
+		*/
+		r.xDomainGet = function (url, opts) {
+			var request = new _XDomainRequest(url, {}, true, opts);
+			request._send();
+		};
+
 		glow.net = r;
 	}
 });
+
 
 /**
 @name glow.tweens
@@ -7608,7 +8036,7 @@
 */
 (window.gloader || glow).module({
 	name: "glow.tweens",
-	library: ["glow", "1.7.0"],
+	library: ["glow", "1.7.7"],
 	depends: [],
 	builder: function(glow) {
 
@@ -7878,8 +8306,8 @@
 */
 (window.gloader || glow).module({
 	name: "glow.anim",
-	library: ["glow", "1.7.0"],
-	depends: [["glow", "1.7.0", "glow.tweens", "glow.events", "glow.dom"]],
+	library: ["glow", "1.7.7"],
+	depends: [["glow", "1.7.7", "glow.tweens", "glow.events", "glow.dom"]],
 	builder: function(glow) {
 		//private
 		var $ = glow.dom.get,
@@ -7916,8 +8344,9 @@
 		(function() {
 			var queue = [], //running animations
 				queueLen = 0,
-				intervalTime = 1, //ms between intervals
+				intervalTime = 13, //ms between intervals
 				interval; //holds the number for the interval
+				
 			manager = {
 				/**
 				@name glow.anim-manager.addToQueue
@@ -8236,6 +8665,8 @@
 		@function
 		@param {String | glow.dom.NodeList} element Element to animate. CSS Selector can be used.
 		@param {Number} duration Animation duration in seconds.
+		@param {String} action Either "down", "up" or "toggle" for the direction of the slide
+		@param {Object} [opts] Options object
 		@param {Function} [opts.tween=easeBoth tween] The way the value moves through time. See {@link glow.tweens}.
 		@param {Function} [opts.onStart] The function to be called when the first element in the NodeList starts the animation.  
 		@param {Function} [opts.onComplete] The function to be called when the first element in the NodeList completes the animation.
@@ -8270,8 +8701,13 @@
 					fromHeight = element.slice(i, i+1).height();
 				} else if (action == "down" || (action == "toggle" && element.slice(i, i+1).height() == 0)) {
 					fromHeight = element.slice(i, i+1).height();
-					element[i].style.height = "auto";
+					element[i].style.height = '';
 					completeHeight = element.slice(i, i+1).height();
+					// what if the height is set to 0 in the CSS?
+					if (completeHeight === 0) {
+						element[i].style.height = 'auto';
+						completeHeight = element.slice(i, i+1).height();
+					}
 					element[i].style.height = fromHeight + "px";
 				}
 
@@ -8290,8 +8726,11 @@
 			events.addListener(timeline, "complete", function() {
 				// return heights to "auto" for slide down
 				element.each(function() {
-					if (this.style.height != "0px") {
-						this.style.height = "auto";
+					if (this.style.height.slice(0,1) != "0") {
+						this.style.height = '';
+						if ( glow.dom.get(this).height() === 0 ) {
+							this.style.height = 'auto';
+						}
 					}
 				})
 			});
@@ -8451,7 +8890,7 @@
 		 		 
 		**/
 		r.fadeIn = function(element, duration, opts){
-			r.fadeTo(element, 1, duration, opts);
+			return r.fadeTo(element, 1, duration, opts);
         };
 		
 		/**
@@ -8599,7 +9038,7 @@
 		@class
 		@description Controls modifying values over time.
 
-			You can create an animtion instance using the constructor, or use
+			You can create an animation instance using the constructor, or use
 			one of the helper methods in {@link glow.anim}.
 
 			Once you have created your animation instance, you can use
@@ -8680,7 +9119,7 @@
 		@description Fired when the animation is stopped before its end.
 
 			If your listener prevents the default action (for instance,
-			by returning false) the animtion will not be stopped.
+			by returning false) the animation will not be stopped.
 		
 		@param {glow.events.Event} event Event Object
 		*/
@@ -8768,7 +9207,7 @@
 			@name glow.anim.Animation#value
 			@type Number
 			@default 0
-			@description Current tweened value of the animtion, usually between 0 & 1.
+			@description Current tweened value of the animation, usually between 0 & 1.
 				The value may become greater than 1 or less than 0 depending
 				on the tween used.
 				
@@ -8825,7 +9264,7 @@
 			/**
 			@name glow.anim.Animation#destroy
 			@function
-			@description Destroys the animation & detatches references to DOM nodes
+			@description Destroys the animation & detaches references to DOM nodes
 				Call this on animations you no longer need to free memory.
 			@returns {glow.anim.Animation}
 			*/
@@ -9354,8 +9793,8 @@
  */
 (window.gloader || glow).module({
 	name: "glow.forms",
-	library: ["glow", "1.7.0"],
-	depends: [["glow", "1.7.0", 'glow.dom', 'glow.events', 'glow.anim', 'glow.net', 'glow.i18n']],
+	library: ["glow", "1.7.7"],
+	depends: [["glow", "1.7.7", 'glow.dom', 'glow.events', 'glow.anim', 'glow.net', 'glow.i18n']],
 	builder: function(glow) {
 
 	var $i18n = glow.i18n,
@@ -9392,14 +9831,11 @@ glow.forms = {};
 	@param {Object} [opts]
 	@param {Function} [opts.onValidate] Handles the 'validate' event when all tests are complete. Default is glow.forms.feedback.defaultFeedback.
 	@example
-	myForm = new glow.forms.Form(
-		glow.dom.get("#htmlFormId"),
-		{
-			onValidate: function(results) {
-				// ...
-			}
+	myForm = new glow.forms.Form("#htmlFormId" ,{
+		onValidate: function(results) {
+			// ...
 		}
-	);
+	});
  */
 glow.forms.Form = function(formNode, opts) { /*debug*///console.log("glow.forms.Form#new("+formNode+", "+opts+")");
 	/**
@@ -10337,7 +10773,7 @@ feedback.defaultFeedback = (function() {
 	//attempts to update the buffer of the screen reader
 	function updateScreenReaderBuffer() {
 		if (!screenReaderBufferUpdater) {
-			screenReaderBufferUpdater = glow.dom.create('<input type="hidden" value="0" name="1.7.0" id="1.7.0" />').appendTo(document.body);
+			screenReaderBufferUpdater = glow.dom.create('<input type="hidden" value="0" name="1.7.7" id="1.7.7" />').appendTo(document.body);
 		}
 		screenReaderBufferUpdater[0].value++;
 	}
@@ -10463,8 +10899,8 @@ feedback.defaultFeedback = (function() {
 */
 (window.gloader || glow).module({
 	name: "glow.embed",
-	library: ["glow", "1.7.0"],
-	depends: [["glow", "1.7.0", "glow.dom", "glow.data", "glow.i18n"]],
+	library: ["glow", "1.7.7"],
+	depends: [["glow", "1.7.7", "glow.dom", "glow.data", "glow.i18n"]],
 	builder: function(glow) {
 
 		var $i18n = glow.i18n;
@@ -10980,8 +11416,8 @@ feedback.defaultFeedback = (function() {
 */
 (window.gloader || glow).module({
 	name: "glow.dragdrop",
-	library: ["glow", "1.7.0"],
-	depends: [["glow", "1.7.0", "glow.tweens", "glow.events", "glow.dom", "glow.anim"]],
+	library: ["glow", "1.7.7"],
+	depends: [["glow", "1.7.7", "glow.tweens", "glow.events", "glow.dom", "glow.anim"]],
 	builder: function(glow) {
 		var events		   = glow.events,
 			addListener	   = events.addListener,
@@ -11838,6 +12274,7 @@ feedback.defaultFeedback = (function() {
 			if (opts.onEnter) listeners[i++] = addListener(this, 'enter', this._opts.onEnter, this);
 			if (opts.onLeave) listeners[i++] = addListener(this, 'leave', this._opts.onLeave, this);
 			if (opts.onDrop)  listeners[i++] = addListener(this, 'drop',  this._opts.onDrop,  this);
+			if (opts.onAfterDrop)  listeners[i++] = addListener(this, 'afterDrop',  this._opts.onAfterDrop,  this);
 
 			this._dragListener = addListener(this._handle, 'mousedown', this._startDragMouse, this);
 
@@ -12147,8 +12584,8 @@ feedback.defaultFeedback = (function() {
 				if (this.dropTargets) {
 					this._mousePos = { x: e.pageX, y: e.pageY };
 				}
-				// check for IE mouseup outside of page boundary
-				if(_ie && e.nativeEvent.button == 0) {
+				// check for mouseup outside of page boundary in IE with document mode less than 9
+				if(_ie && e.nativeEvent.button == 0 && !(document.documentMode >= 9)) {
 					this._releaseElement(e);
 					return false;
 				};
