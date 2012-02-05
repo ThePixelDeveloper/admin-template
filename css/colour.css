@@ -5,7 +5,7 @@ small {
 	color:#888
 }
 
-th,nav,.active,input[type=submit],.pagination a:hover,.date td a:hover {
+th,.active,input[type=submit],.pagination a:hover,.date td a:hover {
 	background:#434A48;
 	color:#fff
 }
@@ -43,7 +43,13 @@ a.delete {
 }
 
 header {
-	background:#313230
+	background:#313230;
+	border-bottom:1px solid #4a4c49;
+}
+
+nav {
+	background:#434A48;
+	border-top:1px solid #2d3030;
 }
 
 nav a:hover {
