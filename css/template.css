@@ -164,8 +164,9 @@ nav > ul > li > a, nav > ul > li > span {
 
 #content {
 	padding:20px;
-	-moz-border-radius-topleft: 10px;
-	-moz-border-radius-bottomright: 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 footer {
