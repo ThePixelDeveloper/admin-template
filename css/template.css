@@ -116,10 +116,14 @@ th, td {
 
 header {
 	-moz-border-radius-topright:10px;
-	border:0;
 	margin:10px auto 0 auto;
 	padding:5px 30px;
 	width:940px;
+}
+
+header > h1 {
+	border:0;
+	margin:0;
 }
 
 /* Nagivation */

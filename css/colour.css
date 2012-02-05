@@ -20,7 +20,7 @@ tr {
 	background-position:0 1px;
 }
 
-.active, th, header, nav a, input[type=submit] {
+.active, th, header > h1, nav a, input[type=submit] {
 	color:#fff;
 }
 
