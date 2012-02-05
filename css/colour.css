@@ -5,12 +5,12 @@ small {
 	color:#888
 }
 
-th,#navigation,.active,input[type=submit],.pagination a:hover,.date td a:hover {
+th,nav,.active,input[type=submit],.pagination a:hover,.date td a:hover {
 	background:#434A48;
 	color:#fff
 }
 
-select, textarea, input, td, #content, #foot {
+select, textarea, input, td, #content, footer {
 	background:#fff url(gradient.png) repeat-x 0 -28px
 }
 tr {
@@ -20,7 +20,7 @@ tr {
 	background-position:0 1px;
 }
 
-.active, th, #head, #navigation a, input[type=submit] {
+.active, th, header, nav a, input[type=submit] {
 	color:#fff;
 }
 
@@ -42,14 +42,14 @@ a.delete {
 	background-image:url(trash.png)
 }
 
-#head {
+header {
 	background:#313230
 }
 
-#navigation a:hover {
+nav a:hover {
 	background:#383E3C
 }
-#navigation .active {
+nav .active {
 	background:#687370
 }
 

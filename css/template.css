@@ -80,7 +80,7 @@ caption {
 
 /* Typography */
 
-label, #navigation, .error, .success, input[type="submit"], input[type="reset"]  {
+label, nav, .error, .success, input[type="submit"], input[type="reset"]  {
 	font-weight:bold;
 }
 
@@ -114,7 +114,7 @@ th, td {
 
 /* Header */
 
-#head {
+header {
 	-moz-border-radius-topright:10px;
 	border:0;
 	margin:10px auto 0 auto;
@@ -124,19 +124,19 @@ th, td {
 
 /* Nagivation */
 
-#navigation {
+nav  {
 	-moz-border-radius-bottomleft:10px;
 	margin:0 auto 10px auto;
 	padding:10px 30px;
 	width:940px;
 }
 
-#navigation > li {
+nav > ul > li {
 	display:inline;
 	margin:0
 }
 
-#navigation > li > a, #navigation > li > span {
+nav > ul > li > a, nav > ul > li > span {
 	display:inline-block;
 	padding:5px 10px;
 	text-decoration:none;
@@ -150,7 +150,7 @@ th, td {
 	-moz-border-radius-bottomright: 10px;
 }
 
-#foot {
+footer {
 	padding:5px 30px;
 	width:940px;
 	margin:10px auto;
@@ -158,7 +158,7 @@ th, td {
 	-moz-border-radius-bottomleft: 10px;
 }
 
-.curved, #navigation a, #navigation span, .error, .success, .box, .utils a {
+.curved, nav > ul > li a, nav > ul > li span, .error, .success, .box, .utils a {
 	-moz-border-radius-bottomleft:5px;
 	-moz-border-radius-topright:5px;
 	-webkit-border-bottom-left-radius:5px;
